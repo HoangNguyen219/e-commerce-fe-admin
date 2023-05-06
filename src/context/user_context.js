@@ -14,6 +14,7 @@ import { auth_url } from '../utils/constants';
 const user = localStorage.getItem('user');
 
 export const initialState = {
+  userLoading: true,
   isLoading: false,
   showAlert: false,
   alertText: '',
@@ -49,11 +50,18 @@ export const UserProvider = ({ children }) => {
     try {
       const response = await axios.post(`${auth_url}/login`, currentUser);
       const user = response.data.user;
-      dispatch({
-        type: LOGIN_USER_SUCCESS,
-        payload: user,
-      });
-      addUserToLocalStorage(user);
+      if (user.role === 'admin') {
+        dispatch({
+          type: LOGIN_USER_SUCCESS,
+          payload: user,
+        });
+        addUserToLocalStorage(user);
+      } else {
+        dispatch({
+          type: LOGIN_USER_ERROR,
+          payload: 'Unauthorized to access this route',
+        });
+      }
     } catch (error) {
       dispatch({ type: LOGIN_USER_ERROR, payload: error.response.data.msg });
     }
