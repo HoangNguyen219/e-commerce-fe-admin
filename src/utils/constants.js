@@ -1,14 +1,22 @@
 import React from 'react';
 import { IoBarChartSharp } from 'react-icons/io5';
-import { MdQueryStats } from 'react-icons/md';
-import { FaWpforms } from 'react-icons/fa';
-import { ImProfile } from 'react-icons/im';
+import { FaProductHunt } from 'react-icons/fa';
+import { MdRateReview } from 'react-icons/md';
+import { MdCategory } from 'react-icons/md';
+import { MdOutlineHomeWork } from 'react-icons/md';
+import { IoCart } from 'react-icons/io5';
+import { FaUser } from 'react-icons/fa';
+import { IoSettings } from 'react-icons/io5';
 
 export const links = [
-  { id: 1, text: 'stats', path: '/', icon: <IoBarChartSharp /> },
-  { id: 2, text: 'all jobs', path: 'all-jobs', icon: <MdQueryStats /> },
-  { id: 3, text: 'add job', path: 'add-job', icon: <FaWpforms /> },
-  { id: 4, text: 'profile', path: 'profile', icon: <ImProfile /> },
+  { id: 1, text: 'statistics', path: '/', icon: <IoBarChartSharp /> },
+  { id: 2, text: 'Products', path: 'products', icon: <FaProductHunt /> },
+  { id: 2, text: 'Reviews', path: 'reviews', icon: <MdRateReview /> },
+  { id: 3, text: 'Categories', path: 'categories', icon: <MdCategory /> },
+  { id: 4, text: 'Companies', path: 'companies', icon: <MdOutlineHomeWork /> },
+  { id: 5, text: 'Orders', path: 'orders', icon: <IoCart /> },
+  { id: 6, text: 'Customers', path: 'customers', icon: <FaUser /> },
+  { id: 7, text: 'Settings', path: 'settings', icon: <IoSettings /> },
 ];
 
 export const colors = [

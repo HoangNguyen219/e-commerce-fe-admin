@@ -5,11 +5,18 @@ import {
   LOGIN_USER_ERROR,
   LOGIN_USER_SUCCESS,
   LOGOUT_USER,
+  TOGGLE_SIDEBAR,
 } from '../actions';
 import { initialState } from '../context/user_context';
 import { ALERT_DANGER, ALERT_SUCCESS } from '../utils/constants';
 
 const user_reducer = (state, action) => {
+  if (action.type === TOGGLE_SIDEBAR) {
+    return {
+      ...state,
+      showSidebar: !state.showSidebar,
+    };
+  }
   if (action.type === DISPLAY_ALERT) {
     return {
       ...state,

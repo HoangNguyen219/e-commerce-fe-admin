@@ -7,6 +7,7 @@ import {
   LOGIN_USER_ERROR,
   LOGIN_USER_SUCCESS,
   LOGOUT_USER,
+  TOGGLE_SIDEBAR,
 } from '../actions';
 import axios from 'axios';
 import { auth_url } from '../utils/constants';
@@ -14,6 +15,7 @@ import { auth_url } from '../utils/constants';
 const user = localStorage.getItem('user');
 
 export const initialState = {
+  showSidebar: false,
   userLoading: true,
   isLoading: false,
   showAlert: false,
@@ -25,6 +27,10 @@ export const initialState = {
 const UserContext = React.createContext();
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  const toggleSidebar = () => {
+    dispatch({ type: TOGGLE_SIDEBAR });
+  };
 
   const displayAlert = (message) => {
     dispatch({ type: DISPLAY_ALERT, payload: message });
@@ -63,7 +69,11 @@ export const UserProvider = ({ children }) => {
         });
       }
     } catch (error) {
-      dispatch({ type: LOGIN_USER_ERROR, payload: error.response.data.msg });
+      console.log(error.response);
+      let msg = error.response.data.msg
+        ? error.response.data.msg
+        : error.message;
+      dispatch({ type: LOGIN_USER_ERROR, payload: msg });
     }
     clearAlert();
   };
@@ -83,6 +93,7 @@ export const UserProvider = ({ children }) => {
         displayAlert,
         loginUser,
         logoutUser,
+        toggleSidebar,
       }}
     >
       {children}

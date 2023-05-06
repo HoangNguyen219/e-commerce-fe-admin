@@ -1,13 +1,17 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import React from 'react';
-import { ErrorPage, LoginPage, ProtectedRoute } from './pages';
+import { ErrorPage, LoginPage, ProtectedRoute, SharedLayout } from './pages';
 function App() {
   return (
     <Router>
       <Routes>
         <Route
           path="/"
-          element={<ProtectedRoute>{/* <SharedLayout /> */}</ProtectedRoute>}
+          element={
+            <ProtectedRoute>
+              <SharedLayout />
+            </ProtectedRoute>
+          }
         >
           {/* <Route index element={<Stats />} />
           <Route path='all-jobs' element={<AllJobs />} />
