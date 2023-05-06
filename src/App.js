@@ -1,11 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from 'react';
+import { ErrorPage } from './pages';
 function App() {
   return (
     <Router>
-      <Navbar />
-      <SideBar />
-      <Routes>{/* <Route path="*" element={<ErrorPage />} /> */}</Routes>
-      <Footer />
+      <Routes>
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
     </Router>
   );
 }
