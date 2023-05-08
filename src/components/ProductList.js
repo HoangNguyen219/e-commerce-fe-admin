@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useProductsContext } from '../context/product_context';
 import ListView from './ListView';
 import Loading from './Loading';
-
+import PageBtnContainer from './PageBtnContainer';
 const ProductList = () => {
   const {
     products,
@@ -28,18 +28,15 @@ const ProductList = () => {
   }
 
   if (products.length < 1) {
-    return (
-      <h5 style={{ textTransform: 'none' }}>
-        Sorry, no products matched your search...
-      </h5>
-    );
+    return <h2 style={{ textTransform: 'none' }}>No products to display...</h2>;
   }
   return (
     <>
       <h5>
         {totalProducts} product{products.length > 1 && 's'} found
       </h5>
-      <ListView products={products} />;{numOfPages > 1 && <PageBtnContainer />}
+      <ListView products={products} />
+      {numOfPages > 1 && <PageBtnContainer />}
     </>
   );
 };

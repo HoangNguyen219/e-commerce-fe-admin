@@ -26,11 +26,6 @@ const Wrapper = styled.section`
     align-self: end;
     margin-top: 1rem;
   }
-  .price {
-    position: relative;
-    bottom: 3px;
-    left: 14px;
-  }
   .shipping {
     display: grid;
     grid-template-columns: 1fr auto;

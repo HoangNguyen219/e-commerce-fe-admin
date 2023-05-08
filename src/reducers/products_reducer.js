@@ -8,6 +8,7 @@ import {
   GET_DATA_ERROR,
   CLEAR_FILTERS,
   HANDLE_CHANGE,
+  CHANGE_PAGE,
 } from '../actions';
 
 const products_reducer = (state, action) => {
@@ -72,13 +73,14 @@ const products_reducer = (state, action) => {
   if (action.type === CLEAR_FILTERS) {
     return {
       ...state,
-      ...state.filters,
       text: '',
       company: 'all',
       category: 'all',
       color: 'all',
       price: state.filters.max_price,
       shipping: false,
+      feature: false,
+      sort: 'price-lowest',
     };
   }
 
@@ -90,6 +92,10 @@ const products_reducer = (state, action) => {
       page: 1,
       [name]: value,
     };
+  }
+
+  if (action.type === CHANGE_PAGE) {
+    return { ...state, page: action.payload.page };
   }
 
   throw new Error(`No matching "${action.type}" - action type`);

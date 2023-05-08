@@ -6,7 +6,6 @@ import { useState, useMemo } from 'react';
 import { useEffect } from 'react';
 import { colorsObj, sorts } from '../utils/constants';
 import { formatPrice } from '../utils/helpers';
-console.log(colorsObj);
 const SearchContainer = () => {
   const {
     products_loading,
@@ -23,7 +22,6 @@ const SearchContainer = () => {
     companies,
     feature,
   } = useProductsContext();
-  console.log(categories);
   const [localSearch, setLocalSearch] = useState('');
   const [localPrice, setLocalPrice] = useState(0);
   useEffect(() => {

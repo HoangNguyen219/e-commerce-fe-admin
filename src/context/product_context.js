@@ -9,6 +9,7 @@ import {
   GET_DATA_SUCCESS,
   GET_DATA_ERROR,
   HANDLE_CHANGE,
+  CHANGE_PAGE,
 } from '../actions';
 import reducer from '../reducers/products_reducer';
 import React from 'react';
@@ -124,6 +125,10 @@ export const ProductsProvider = ({ children }) => {
     dispatch({ type: CLEAR_FILTERS });
   };
 
+  const changePage = (page) => {
+    dispatch({ type: CHANGE_PAGE, payload: { page } });
+  };
+
   return (
     <ProductsContext.Provider
       value={{
@@ -132,6 +137,7 @@ export const ProductsProvider = ({ children }) => {
         clearFilters,
         getProducts,
         handleChange,
+        changePage,
       }}
     >
       {children}
