@@ -1,3 +1,4 @@
 import SharedLayout from './SharedLayout';
+import ProductsPage from './ProductsPage';
 
-export { SharedLayout };
+export { SharedLayout, ProductsPage };

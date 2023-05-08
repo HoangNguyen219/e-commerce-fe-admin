@@ -1,5 +1,5 @@
 import ErrorPage from './ErrorPage';
 import LoginPage from './LoginPage';
 import ProtectedRoute from './ProtectedRoute';
-import { SharedLayout } from './dashboard';
-export { ErrorPage, LoginPage, ProtectedRoute, SharedLayout };
+import { SharedLayout, ProductsPage } from './dashboard';
+export { ErrorPage, LoginPage, ProtectedRoute, SharedLayout, ProductsPage };

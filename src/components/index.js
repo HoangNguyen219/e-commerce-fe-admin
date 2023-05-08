@@ -8,6 +8,7 @@ import NavLinks from './NavLinks';
 import Navbar from './Navbar';
 import FormRowSelect from './FormRowSelect';
 import SearchContainer from './SearchContainer';
+import ProductList from './ProductList';
 
 export {
   Alert,
@@ -20,4 +21,5 @@ export {
   Navbar,
   FormRowSelect,
   SearchContainer,
+  ProductList,
 };
