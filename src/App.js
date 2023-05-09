@@ -7,6 +7,7 @@ import {
   SharedLayout,
   ProductsPage,
 } from './pages';
+import { AddProduct } from './pages/dashboard';
 function App() {
   return (
     <Router>
@@ -21,6 +22,7 @@ function App() {
         >
           {/* <Route index element={<Stats />} /> */}
           <Route path="products" element={<ProductsPage />} />
+          <Route path="add-product" element={<AddProduct />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<ErrorPage />} />

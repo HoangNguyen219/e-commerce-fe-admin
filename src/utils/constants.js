@@ -21,7 +21,6 @@ export const links = [
 ];
 
 const colors = [
-  'all',
   'black',
   'white',
   'gray',
@@ -44,6 +43,11 @@ export const sorts = [
   { id: 'oldest', name: 'Oldest' },
   { id: 'rating-lowest', name: 'Rating (Lowest)' },
   { id: 'rating-highest', name: 'Rating (Highest)' },
+];
+
+export const booleanList = [
+  { id: 'false', name: 'False' },
+  { id: 'true', name: 'True' },
 ];
 
 export const colorsObj = colors.map((color) => {

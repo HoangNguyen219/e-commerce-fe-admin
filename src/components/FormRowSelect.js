@@ -1,10 +1,19 @@
 import React from 'react';
-const FormRowSelect = ({ labelText, name, value, handleChange, list }) => {
+const FormRowSelect = ({
+  className,
+  labelText,
+  name,
+  value,
+  handleChange,
+  list,
+}) => {
   return (
-    <div className="form-row">
-      <label htmlFor={name} className="form-label">
-        {labelText || name}
-      </label>
+    <div className={`${className} form-row `}>
+      {labelText && (
+        <label htmlFor={name} className="form-label">
+          {labelText}
+        </label>
+      )}
       <select
         id={name}
         name={name}

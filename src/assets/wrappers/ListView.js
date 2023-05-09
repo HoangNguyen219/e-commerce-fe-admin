@@ -4,7 +4,6 @@ const Wrapper = styled.section`
   display: grid;
   row-gap: 3rem;
   img {
-    width: 100%;
     display: block;
     width: 300px;
     height: 200px;
@@ -24,24 +23,11 @@ const Wrapper = styled.section`
     margin-bottom: 1rem;
   }
 
-  .edit-btn,
-  .delete-btn {
-    letter-spacing: var(--letterSpacing);
-    cursor: pointer;
-    height: 30px;
+  .btn {
     margin-right: 0.5rem;
+    font-size: 0.7rem;
   }
-  .edit-btn {
-    color: var(--green-dark);
-    background: var(--green-light);
-  }
-  .delete-btn {
-    color: var(--red-dark);
-    background: var(--red-light);
-  }
-  &:hover .actions {
-    visibility: visible;
-  }
+
   @media (min-width: 992px) {
     article {
       display: grid;

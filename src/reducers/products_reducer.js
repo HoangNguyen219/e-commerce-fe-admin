@@ -1,19 +1,17 @@
 import {
   GET_PRODUCTS_SUCCESS,
-  GET_SINGLE_PRODUCT_ERROR,
-  GET_SINGLE_PRODUCT_BEGIN,
-  GET_SINGLE_PRODUCT_SUCCESS,
   GET_DATA_BEGIN,
   GET_DATA_SUCCESS,
   GET_DATA_ERROR,
   CLEAR_FILTERS,
   HANDLE_CHANGE,
   CHANGE_PAGE,
+  SET_EDIT_PRODUCT,
 } from '../actions';
 
 const products_reducer = (state, action) => {
   if (action.type === GET_DATA_BEGIN) {
-    return { ...state, products_loading: true };
+    return { ...state, loading: true };
   }
 
   if (action.type === GET_DATA_SUCCESS) {
@@ -22,10 +20,10 @@ const products_reducer = (state, action) => {
     maxPrice = Math.max(...maxPrice);
     return {
       ...state,
-      products_loading: false,
+      loading: false,
       products: payload.products,
-      companies: [{ id: 'all', name: 'All' }, ...payload.companies],
-      categories: [{ id: 'all', name: 'All' }, ...payload.categories],
+      companies: payload.companies,
+      categories: payload.categories,
       ...state.filters,
       max_price: maxPrice,
       price: maxPrice,
@@ -33,37 +31,13 @@ const products_reducer = (state, action) => {
   }
 
   if (action.type === GET_DATA_ERROR) {
-    return { ...state, products_loading: false, products_error: true };
-  }
-
-  if (action.type === GET_SINGLE_PRODUCT_BEGIN) {
-    return {
-      ...state,
-      single_product_loading: true,
-      single_product_error: false,
-    };
-  }
-
-  if (action.type === GET_SINGLE_PRODUCT_SUCCESS) {
-    return {
-      ...state,
-      single_product_loading: false,
-      single_product: action.payload,
-    };
-  }
-
-  if (action.type === GET_SINGLE_PRODUCT_ERROR) {
-    return {
-      ...state,
-      single_product_loading: false,
-      single_product_error: true,
-    };
+    return { ...state, loading: false, error: true };
   }
 
   if (action.type === GET_PRODUCTS_SUCCESS) {
     return {
       ...state,
-      products_loading: false,
+      loading: false,
       products: action.payload.products,
       totalProducts: action.payload.totalProducts,
       numOfPages: action.payload.numOfPages,
@@ -96,6 +70,17 @@ const products_reducer = (state, action) => {
 
   if (action.type === CHANGE_PAGE) {
     return { ...state, page: action.payload.page };
+  }
+
+  if (action.type === SET_EDIT_PRODUCT) {
+    const product = state.products.find(
+      (product) => product.id === action.payload.id
+    );
+    return {
+      ...state,
+      isEditing: true,
+      product,
+    };
   }
 
   throw new Error(`No matching "${action.type}" - action type`);

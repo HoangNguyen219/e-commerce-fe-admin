@@ -17,7 +17,8 @@ const ProductList = () => {
     page,
     numOfPages,
     totalProducts,
-    products_loading: loading,
+    loading,
+    error,
   } = useProductsContext();
   useEffect(() => {
     getProducts();
@@ -25,6 +26,10 @@ const ProductList = () => {
 
   if (loading) {
     return <Loading />;
+  }
+
+  if (error) {
+    return <h2 style={{ textTransform: 'none' }}>There was an error...</h2>;
   }
 
   if (products.length < 1) {

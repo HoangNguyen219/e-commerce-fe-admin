@@ -145,9 +145,17 @@ ul {
   display: block;
   object-fit: cover;
 }
-/* buttons */
 
-.btn {
+.inline {
+  display: inline-block;
+}
+
+input[type=file] {
+  width: 100%;
+}
+
+/* buttons */
+input[type=file]::file-selector-button, .btn {
   cursor: pointer;
   color: var(--white);
   background: var(--primary-500);
@@ -188,6 +196,24 @@ ul {
   color: var(--white);
 }
 
+.btn-danger {
+  background: var(--red-light);
+  color: var(--red-dark);
+}
+.btn-danger:hover {
+  background: var(--red-dark);
+  color: var(--white);
+}
+
+.btn-safe, input[type=file]::file-selector-button {
+  color: var(--green-dark);
+  background: var(--green-light);
+}
+
+.btn-safe:hover {
+  background: var(--green-dark);
+  color: var(--white);
+}
 
 /* alerts */
 .alert {
@@ -249,6 +275,7 @@ ul {
 
 .form-textarea {
   height: 7rem;
+  resize: none;
 }
 ::placeholder {
   font-family: inherit;
@@ -270,10 +297,10 @@ ul {
 .loading {
   width: 6rem;
   height: 6rem;
-  border: 5px solid var(--grey-400);
+  border: 5px solid var(--grey-100);
   border-radius: 50%;
   border-top-color: var(--primary-500);
-  animation: spinner 2s linear infinite;
+  animation: spinner 0.6s linear infinite;
 }
 .loading-center {
   margin: 0 auto;

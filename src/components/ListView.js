@@ -22,14 +22,14 @@ const ListView = ({ products }) => {
               <div className="actions">
                 <Link
                   to="/add-product"
-                  className="btn edit-btn"
-                  onClick={() => setEditProduct()}
+                  className="btn btn-safe"
+                  onClick={() => setEditProduct(id)}
                 >
                   Edit
                 </Link>
                 <button
                   type="button"
-                  className="btn delete-btn"
+                  className="btn btn-danger"
                   onClick={() => deleteProduct()}
                 >
                   Delete

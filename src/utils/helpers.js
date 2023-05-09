@@ -12,3 +12,7 @@ export const capitalize = (str) => {
   );
   return capitalizedArr.join(' ');
 };
+
+export const addAll = (arr) => {
+  return [{ id: 'all', name: 'All' }, ...arr];
+};

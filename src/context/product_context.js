@@ -10,6 +10,7 @@ import {
   GET_DATA_ERROR,
   HANDLE_CHANGE,
   CHANGE_PAGE,
+  SET_EDIT_PRODUCT,
 } from '../actions';
 import reducer from '../reducers/products_reducer';
 import React from 'react';
@@ -22,12 +23,9 @@ import {
 
 const ProductsContext = React.createContext();
 const initialState = {
-  products_loading: false,
-  products_error: false,
+  loading: false,
+  error: false,
   products: [],
-  single_product_loading: false,
-  single_product_error: false,
-  single_product: {},
   categories: [],
   companies: [],
   totalProducts: 0,
@@ -43,6 +41,8 @@ const initialState = {
   price: 0,
   shipping: false,
   feature: false,
+  product: {},
+  isEditting: false,
 };
 
 export const ProductsProvider = ({ children }) => {
@@ -129,6 +129,71 @@ export const ProductsProvider = ({ children }) => {
     dispatch({ type: CHANGE_PAGE, payload: { page } });
   };
 
+  const setEditProduct = (id) => {
+    dispatch({ type: SET_EDIT_PRODUCT, payload: { id } });
+  };
+
+  const editJob = async () => {
+    // dispatch({ type: EDIT_JOB_BEGIN });
+    // try {
+    //   const { position, company, jobLocation, jobType, status } = state;
+    //   await authFetch.patch(`/jobs/${state.editJobId}`, {
+    //     company,
+    //     position,
+    //     jobLocation,
+    //     jobType,
+    //     status,
+    //   });
+    //   dispatch({ type: EDIT_JOB_SUCCESS });
+    //   dispatch({ type: CLEAR_VALUES });
+    // } catch (error) {
+    //   if (error.response.status === 401) return;
+    //   dispatch({
+    //     type: EDIT_JOB_ERROR,
+    //     payload: { msg: error.response.data.msg },
+    //   });
+    // }
+    // clearAlert();
+  };
+
+  const deleteJob = async (jobId) => {
+    // dispatch({ type: DELETE_JOB_BEGIN });
+    // try {
+    //   await authFetch.delete(`/jobs/${jobId}`);
+    //   getJobs();
+    // } catch (error) {
+    //   if (error.response.status === 401) return;
+    //   dispatch({
+    //     type: DELETE_JOB_ERROR,
+    //     payload: { msg: error.response.data.msg },
+    //   });
+    // }
+    // clearAlert();
+  };
+
+  const createJob = async () => {
+    // dispatch({ type: CREATE_JOB_BEGIN });
+    // try {
+    //   const { position, company, jobLocation, jobType, status } = state;
+    //   await authFetch.post('/jobs', {
+    //     position,
+    //     company,
+    //     jobLocation,
+    //     jobType,
+    //     status,
+    //   });
+    //   dispatch({ type: CREATE_JOB_SUCCESS });
+    //   dispatch({ type: CLEAR_VALUES });
+    // } catch (error) {
+    //   if (error.response.status === 401) return;
+    //   dispatch({
+    //     type: CREATE_JOB_ERROR,
+    //     payload: { msg: error.response.data.msg },
+    //   });
+    // }
+    // clearAlert();
+  };
+
   return (
     <ProductsContext.Provider
       value={{
@@ -138,6 +203,7 @@ export const ProductsProvider = ({ children }) => {
         getProducts,
         handleChange,
         changePage,
+        setEditProduct,
       }}
     >
       {children}

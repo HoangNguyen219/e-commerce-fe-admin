@@ -5,7 +5,8 @@ import Wrapper from '../assets/wrappers/SearchContainer';
 import { useState, useMemo } from 'react';
 import { useEffect } from 'react';
 import { colorsObj, sorts } from '../utils/constants';
-import { formatPrice } from '../utils/helpers';
+import { formatPrice, addAll } from '../utils/helpers';
+
 const SearchContainer = () => {
   const {
     products_loading,
@@ -24,6 +25,11 @@ const SearchContainer = () => {
   } = useProductsContext();
   const [localSearch, setLocalSearch] = useState('');
   const [localPrice, setLocalPrice] = useState(0);
+
+  const categoriesAddAll = addAll(categories);
+  const companiesAddAll = addAll(companies);
+  const colorsObjAddAll = addAll(colorsObj);
+
   useEffect(() => {
     setLocalPrice(max_price);
   }, [max_price]);
@@ -84,6 +90,7 @@ const SearchContainer = () => {
           <FormRow
             type="text"
             name="text"
+            labelText="text"
             value={localSearch}
             handleChange={optimizedDebounceText}
           />
@@ -93,7 +100,7 @@ const SearchContainer = () => {
             name="categoryId"
             value={categoryId}
             handleChange={handleSearch}
-            list={categories}
+            list={categoriesAddAll}
           />
           {/* search by company */}
           <FormRowSelect
@@ -101,7 +108,7 @@ const SearchContainer = () => {
             name="companyId"
             value={companyId}
             handleChange={handleSearch}
-            list={companies}
+            list={companiesAddAll}
           />
           {/* search by color */}
           <FormRowSelect
@@ -109,7 +116,7 @@ const SearchContainer = () => {
             name="color"
             value={color}
             handleChange={handleSearch}
-            list={colorsObj}
+            list={colorsObjAddAll}
           />
 
           {/* shipping */}
@@ -142,6 +149,7 @@ const SearchContainer = () => {
           {/* end of feature */}
           {/* sort */}
           <FormRowSelect
+            labelText="sort"
             name="sort"
             value={sort}
             handleChange={handleSearch}
