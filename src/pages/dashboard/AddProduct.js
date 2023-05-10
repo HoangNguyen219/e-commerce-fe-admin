@@ -1,11 +1,18 @@
 import React from 'react';
-import { FormRow, FormRowSelect, Alert } from '../../components';
+import {
+  FormRow,
+  FormRowSelect,
+  Alert,
+  Modal,
+  FileInput,
+} from '../../components';
 import { useProductsContext } from '../../context/product_context';
 import { useUserContext } from '../../context/user_context';
 import Wrapper from '../../assets/wrappers/DashboardFormPage';
 import { useState } from 'react';
 import { booleanList, colorsObj } from '../../utils/constants';
 import { FaTimes } from 'react-icons/fa';
+import { toInt } from '../../utils/helpers';
 
 const AddProduct = () => {
   const {
@@ -16,30 +23,66 @@ const AddProduct = () => {
     product,
     categories,
     companies,
+    uploadImage,
   } = useProductsContext();
 
-  // primaryImage: string;
-  // secondaryImages: string[];
-  // colorStocks: [IColorStock];
+  const [showModal, setShowModal] = useState(false);
+  const [deleteFn, setdeleteFn] = useState(null);
 
-  const { showAlert, displayAlert } = useUserContext();
-  const initialState = product;
+  const handleShowModal = (callback, index) => {
+    setShowModal(true);
+    setdeleteFn({ callback, index });
+  };
 
-  const [values, setValues] = useState(initialState);
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const { showAlert, displayAlert, alertText, alertType } = useUserContext();
+
+  const [values, setValues] = useState(product);
   const [primaryImageFile, setPrimaryImageFile] = useState(null);
   const [secondaryImagesFile, setSecondaryImagesFile] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    let {
+      name,
+      price,
+      categoryId,
+      companyId,
+      featured,
+      freeShipping,
+      description,
+      colorStocks,
+      primaryImage,
+      secondaryImages,
+    } = values;
+    if (
+      !name ||
+      !price ||
+      !description ||
+      !colorStocks ||
+      colorStocks.length === 0
+    ) {
+      displayAlert('Please provide all values');
+      return;
+    }
+    if (toInt(price) === -1) {
+      displayAlert('Please provide a valid number');
+      return;
+    }
+    colorStocks.forEach((cs) => {
+      if (toInt(cs.stock) === -1) {
+        displayAlert('Please provide a valid number');
+        return;
+      }
+    });
 
-    // if (!position || !company || !productLocation) {
-    //   displayAlert();
-    //   return;
-    // }
-    // if (isEditing) {
-    //   editJob();
-    //   return;
-    // }
+    if (primaryImageFile) {
+      uploadImage({ file: primaryImageFile, isPrimary: true });
+    }
+
     // createJob();
   };
 
@@ -67,7 +110,6 @@ const AddProduct = () => {
   };
 
   const handleSecondaryImageDelete = (index) => {
-    console.log(index);
     const newSecondaryImagesFile = [...secondaryImagesFile];
     newSecondaryImagesFile.splice(index, 1);
     setSecondaryImagesFile(newSecondaryImagesFile);
@@ -88,42 +130,53 @@ const AddProduct = () => {
         if (i === parseInt(index)) {
           return {
             ...colorStock,
-            [name]: name === 'stock' ? parseInt(value) : value,
+            [name]: value,
           };
         } else {
           return colorStock;
         }
       });
-      console.log(colorStocks);
       return { ...values, colorStocks };
     });
   };
   const handleAddColorStock = () => {
-    // setProduct(prevProduct => ({
-    //   ...prevProduct,
-    //   colorStocks: [...prevProduct.colorStocks, { color: '', stock: 0 }]
-    // }));
+    setValues((values) => {
+      values.colorStocks = values.colorStocks || [];
+      return {
+        ...values,
+        colorStocks: [...values.colorStocks, { color: '', stock: 0 }],
+      };
+    });
   };
 
   const handleDeleteColorStock = (index) => {
-    // setProduct(prevProduct => ({
-    //   ...prevProduct,
-    //   colorStocks: prevProduct.colorStocks.filter((colorStock, i) => i !== index)
-    // }));
+    setValues((values) => {
+      return {
+        ...values,
+        colorStocks: values.colorStocks.filter((_, i) => i !== index),
+      };
+    });
   };
 
   const handleInput = (e) => {
     const { name, value } = e.target;
     setValues((values) => {
-      return { ...values, [name]: name === 'price' ? parseInt(value) : value };
+      return { ...values, [name]: value };
     });
   };
 
   return (
     <Wrapper>
+      {showModal && (
+        <Modal
+          handleCloseModal={handleCloseModal}
+          handleDeleteItem={() => {
+            deleteFn.callback(deleteFn.index);
+          }}
+        />
+      )}
       <form className="form">
         <h3>{isEditing ? 'edit product' : 'add product'}</h3>
-        {showAlert && <Alert />}
         <div className="form-center">
           {/* name */}
           <FormRow
@@ -190,9 +243,9 @@ const AddProduct = () => {
         {/* colorStock */}
         <div className="form-row">
           <label className="form-label">Color Stock</label>
-          {product.colorStocks &&
+          {values.colorStocks &&
             values.colorStocks.map((colorStock, index) => (
-              <div key={index}>
+              <div key={index} className="color-stock">
                 <FormRowSelect
                   className="inline"
                   name="color"
@@ -210,7 +263,7 @@ const AddProduct = () => {
                 <button
                   className="btn btn-danger"
                   type="button"
-                  onClick={() => handleDeleteColorStock(index)}
+                  onClick={() => handleShowModal(handleDeleteColorStock, index)}
                 >
                   Delete
                 </button>
@@ -233,13 +286,13 @@ const AddProduct = () => {
           {values.primaryImage && (
             <img src={values.primaryImage} alt="Primary image" />
           )}
-          <input
+          <FileInput
+            handleFileSelected={handlePrimaryImageChange}
             id="primaryImage"
-            type="file"
-            accept="image/*"
-            onChange={handlePrimaryImageChange}
           />
         </div>
+        {/* secondaryImages */}
+
         <div className="form-row">
           <label className="form-label">Secondary images</label>
           <div className="img-group">
@@ -254,20 +307,23 @@ const AddProduct = () => {
                   <button
                     className="btn-delete"
                     type="button"
-                    onClick={() => handleSecondaryImageDelete(index)}
+                    onClick={() =>
+                      handleShowModal(handleSecondaryImageDelete, index)
+                    }
                   >
                     <FaTimes />
                   </button>
                 </div>
               ))}
           </div>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleSecondaryImageChange}
-            multiple
+          <FileInput
+            handleFileSelected={handleSecondaryImageChange}
+            id="secondaryImages"
+            multiple={true}
           />
         </div>
+        {showAlert && <Alert alertText={alertText} alertType={alertType} />}
+
         <button
           type="submit"
           className="btn btn-block submit-btn"

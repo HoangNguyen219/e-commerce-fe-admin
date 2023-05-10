@@ -9,6 +9,8 @@ import Navbar from './Navbar';
 import FormRowSelect from './FormRowSelect';
 import SearchContainer from './SearchContainer';
 import ProductList from './ProductList';
+import Modal from './Modal';
+import FileInput from './FileInput';
 
 export {
   Alert,
@@ -22,4 +24,6 @@ export {
   FormRowSelect,
   SearchContainer,
   ProductList,
+  Modal,
+  FileInput,
 };

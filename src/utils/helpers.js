@@ -16,3 +16,7 @@ export const capitalize = (str) => {
 export const addAll = (arr) => {
   return [{ id: 'all', name: 'All' }, ...arr];
 };
+
+export const toInt = (number) => {
+  return Number.isNaN(parseInt(number)) ? -1 : parseInt(number);
+};

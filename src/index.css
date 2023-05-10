@@ -155,7 +155,7 @@ input[type=file] {
 }
 
 /* buttons */
-input[type=file]::file-selector-button, .btn {
+ .btn {
   cursor: pointer;
   color: var(--white);
   background: var(--primary-500);
@@ -205,7 +205,7 @@ input[type=file]::file-selector-button, .btn {
   color: var(--white);
 }
 
-.btn-safe, input[type=file]::file-selector-button {
+.btn-safe{
   color: var(--green-dark);
   background: var(--green-light);
 }
