@@ -6,6 +6,8 @@ import {
   CHANGE_PAGE,
   SET_EDIT_PRODUCT,
   UPLOAD_IMAGE_SUCCESS,
+  HANDLE_SHOW_MODAL,
+  HANDLE_CLOSE_MODAL,
 } from '../actions';
 
 const products_reducer = (state, action) => {
@@ -81,6 +83,23 @@ const products_reducer = (state, action) => {
           secondaryImages: [imageUrl, ...state.product.secondaryImages],
         };
     return { ...state, product: updatedProduct };
+  }
+
+  if (action.type === HANDLE_SHOW_MODAL) {
+    const { callback, index } = action.payload;
+    return {
+      ...state,
+      showModal: true,
+      deleteFn: { callback, index },
+    };
+  }
+
+  if (action.type === HANDLE_CLOSE_MODAL) {
+    return {
+      ...state,
+      showModal: false,
+      deleteFn: null,
+    };
   }
 
   throw new Error(`No matching "${action.type}" - action type`);

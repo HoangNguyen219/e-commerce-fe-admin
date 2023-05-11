@@ -7,6 +7,8 @@ import {
   CHANGE_PAGE,
   SET_EDIT_PRODUCT,
   UPLOAD_IMAGE_SUCCESS,
+  HANDLE_SHOW_MODAL,
+  HANDLE_CLOSE_MODAL,
 } from '../actions';
 import reducer from '../reducers/products_reducer';
 import React from 'react';
@@ -34,6 +36,8 @@ const initialState = {
   featured: 'all',
   product: {},
   isEditting: false,
+  showModal: false,
+  deleteFn: null,
 };
 
 export const ProductsProvider = ({ children }) => {
@@ -215,27 +219,12 @@ export const ProductsProvider = ({ children }) => {
     setLoading(false);
   };
 
-  const createJob = async () => {
-    // dispatch({ type: CREATE_JOB_BEGIN });
-    // try {
-    //   const { position, company, jobLocation, jobType, status } = state;
-    //   await authFetch.post('/jobs', {
-    //     position,
-    //     company,
-    //     jobLocation,
-    //     jobType,
-    //     status,
-    //   });
-    //   dispatch({ type: CREATE_JOB_SUCCESS });
-    //   dispatch({ type: CLEAR_VALUES });
-    // } catch (error) {
-    //   if (error.response.status === 401) return;
-    //   dispatch({
-    //     type: CREATE_JOB_ERROR,
-    //     payload: { msg: error.response.data.msg },
-    //   });
-    // }
-    // clearAlert();
+  const handleShowModal = (callback, index) => {
+    dispatch({ type: HANDLE_SHOW_MODAL, payload: { callback, index } });
+  };
+
+  const handleCloseModal = () => {
+    dispatch({ type: HANDLE_CLOSE_MODAL });
   };
 
   return (
@@ -251,6 +240,8 @@ export const ProductsProvider = ({ children }) => {
         editProduct,
         createProduct,
         deleteProduct,
+        handleShowModal,
+        handleCloseModal,
       }}
     >
       {children}

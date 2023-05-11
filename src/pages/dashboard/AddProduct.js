@@ -30,28 +30,19 @@ const AddProduct = () => {
     categories,
     companies,
     uploadImage,
+    handleShowModal,
+    handleCloseModal,
+    showModal,
+    deleteFn,
   } = useProductsContext();
 
   const { displayAlert, alert, isLoading } = useUserContext();
-
-  const [showModal, setShowModal] = useState(false);
-  const [deleteFn, setdeleteFn] = useState(null);
-
   const [values, setValues] = useState({ ...product });
   const [primaryImageFile, setPrimaryImageFile] = useState(null);
   const [secondaryImagesFile, setSecondaryImagesFile] = useState([]);
   const [isChangeImage, setIsChangeImage] = useState(false);
 
   const navigate = useNavigate();
-
-  const handleShowModal = (callback, index) => {
-    setShowModal(true);
-    setdeleteFn({ callback, index });
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,12 +51,8 @@ const AddProduct = () => {
       price,
       categoryId,
       companyId,
-      featured,
-      freeShipping,
       description,
       colorStocks,
-      primaryImage,
-      secondaryImages,
     } = values;
     if (
       !name ||
