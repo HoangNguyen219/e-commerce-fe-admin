@@ -63,9 +63,7 @@ export const DECREASE = 'decrease';
 export const ALERT_DANGER = 'danger';
 export const ALERT_SUCCESS = 'success';
 
-export const products_url = '/api/v1/products';
-export const categories_url = '/api/v1/categories';
-export const companies_url = '/api/v1/companies';
+export const baseUrl = '/api/v1/';
 export const auth_url = '/api/v1/auth';
 
 export const store_url = 'http://localhost:8000';

@@ -26,7 +26,7 @@ const Wrapper = styled.section`
     align-self: end;
     margin-top: 1rem;
   }
-  .shipping {
+  .price {
     display: grid;
     grid-template-columns: 1fr auto;
     -moz-box-align: center;

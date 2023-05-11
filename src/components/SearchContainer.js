@@ -4,12 +4,12 @@ import { useProductsContext } from '../context/product_context';
 import Wrapper from '../assets/wrappers/SearchContainer';
 import { useState, useMemo } from 'react';
 import { useEffect } from 'react';
-import { colorsObj, sorts } from '../utils/constants';
+import { colorsObj, sorts, booleanList } from '../utils/constants';
 import { formatPrice, addAll } from '../utils/helpers';
+import { useUserContext } from '../context/user_context';
 
 const SearchContainer = () => {
   const {
-    products_loading,
     categoryId,
     companyId,
     color,
@@ -21,18 +21,22 @@ const SearchContainer = () => {
     clearFilters,
     categories,
     companies,
-    feature,
+    featured,
+    price,
   } = useProductsContext();
+
+  const { isLoading } = useUserContext();
   const [localSearch, setLocalSearch] = useState('');
   const [localPrice, setLocalPrice] = useState(0);
 
   const categoriesAddAll = addAll(categories);
   const companiesAddAll = addAll(companies);
   const colorsObjAddAll = addAll(colorsObj);
+  const booleanListAddAll = addAll(booleanList);
 
   useEffect(() => {
-    setLocalPrice(max_price);
-  }, [max_price]);
+    setLocalPrice(price);
+  }, [price]);
 
   const handleSearch = (e) => {
     let name = e.target.name;
@@ -40,9 +44,6 @@ const SearchContainer = () => {
 
     if (name === 'price') {
       value = Number(value);
-    }
-    if (name === 'shipping' || name === 'feature') {
-      value = e.target.checked;
     }
     handleChange({ name, value });
   };
@@ -118,34 +119,23 @@ const SearchContainer = () => {
             handleChange={handleSearch}
             list={colorsObjAddAll}
           />
-
-          {/* shipping */}
-          <div className="form-row shipping">
-            <label className="form-label" htmlFor="shipping">
-              free shipping
-            </label>
-            <input
-              type="checkbox"
-              name="shipping"
-              id="shipping"
-              onChange={handleSearch}
-              checked={shipping}
-            />
-          </div>
-          {/* end of shipping */}
           {/* feature */}
-          <div className="form-row shipping">
-            <label className="form-label" htmlFor="feature">
-              featured product
-            </label>
-            <input
-              type="checkbox"
-              name="feature"
-              id="shipping"
-              onChange={handleSearch}
-              checked={feature}
-            />
-          </div>
+          <FormRowSelect
+            labelText="Featured"
+            name="featured"
+            value={featured}
+            handleChange={handleSearch}
+            list={booleanListAddAll}
+          />
+          {/* free shiping */}
+          <FormRowSelect
+            labelText="free shiping"
+            name="shipping"
+            value={shipping}
+            handleChange={handleSearch}
+            list={booleanListAddAll}
+          />
+
           {/* end of feature */}
           {/* sort */}
           <FormRowSelect
@@ -158,7 +148,7 @@ const SearchContainer = () => {
           {/* price */}
           <div className="form-row">
             <label className="form-label">price</label>
-            <div className="shipping">
+            <div className="price">
               <input
                 type="range"
                 name="price"
@@ -172,7 +162,7 @@ const SearchContainer = () => {
           </div>
           <button
             className="btn btn-block btn-danger"
-            disabled={products_loading}
+            disabled={isLoading}
             onClick={handleSubmit}
           >
             clear filters

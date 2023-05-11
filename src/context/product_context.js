@@ -1,30 +1,21 @@
 import { useContext, useEffect, useReducer } from 'react';
 import {
   GET_PRODUCTS_SUCCESS,
-  GET_SINGLE_PRODUCT_BEGIN,
-  GET_SINGLE_PRODUCT_SUCCESS,
-  GET_SINGLE_PRODUCT_ERROR,
   CLEAR_FILTERS,
-  GET_DATA_BEGIN,
   GET_DATA_SUCCESS,
-  GET_DATA_ERROR,
   HANDLE_CHANGE,
   CHANGE_PAGE,
   SET_EDIT_PRODUCT,
+  UPLOAD_IMAGE_SUCCESS,
 } from '../actions';
 import reducer from '../reducers/products_reducer';
 import React from 'react';
 import axios from 'axios';
-import {
-  categories_url,
-  companies_url,
-  products_url,
-} from '../utils/constants';
+import { ALERT_DANGER, ALERT_SUCCESS, baseUrl } from '../utils/constants';
+import { useUserContext } from './user_context';
 
 const ProductsContext = React.createContext();
 const initialState = {
-  loading: false,
-  error: false,
   products: [],
   categories: [],
   companies: [],
@@ -39,26 +30,42 @@ const initialState = {
   min_price: 0,
   max_price: 0,
   price: 0,
-  shipping: false,
-  feature: false,
+  shipping: 'all',
+  featured: 'all',
   product: {},
   isEditting: false,
 };
 
 export const ProductsProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { logoutUser, displayAlert, setLoading } = useUserContext();
 
+  const authFetch = axios.create({
+    baseURL: baseUrl,
+  });
+
+  authFetch.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    (error) => {
+      if (error.response.status === 401) {
+        logoutUser();
+      }
+      return Promise.reject(error);
+    }
+  );
   const fetchData = async () => {
-    dispatch({ type: GET_DATA_BEGIN });
+    setLoading(true);
     try {
       const [
         productsResponse,
         categoriesResponse,
         companiesResponse,
       ] = await Promise.all([
-        axios.get(products_url),
-        axios.get(categories_url),
-        axios.get(companies_url),
+        authFetch.get('/products'),
+        authFetch.get('/categories'),
+        authFetch.get('/companies'),
       ]);
       const products = productsResponse.data.products;
       const categories = categoriesResponse.data.categories;
@@ -68,8 +75,9 @@ export const ProductsProvider = ({ children }) => {
         payload: { products, categories, companies },
       });
     } catch (error) {
-      dispatch({ type: GET_DATA_ERROR });
+      handleError(error);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -85,13 +93,14 @@ export const ProductsProvider = ({ children }) => {
       color,
       price,
       shipping,
+      featured,
       sort,
     } = state;
 
-    let url = `${products_url}?page=${page}&text=${text}&companyId=${companyId}&categoryId=${categoryId}&color=${color}&price=${price}&shipping=${shipping}&sort=${sort}`;
-    dispatch({ type: GET_DATA_BEGIN });
+    let url = `/products?page=${page}&text=${text}&companyId=${companyId}&categoryId=${categoryId}&color=${color}&price=${price}&shipping=${shipping}&featured=${featured}&sort=${sort}`;
+    setLoading(true);
     try {
-      const { data } = await axios.get(url);
+      const { data } = await authFetch.get(url);
       const { products, totalProducts, numOfPages } = data;
       dispatch({
         type: GET_PRODUCTS_SUCCESS,
@@ -102,19 +111,9 @@ export const ProductsProvider = ({ children }) => {
         },
       });
     } catch (error) {
-      dispatch({ type: GET_DATA_ERROR });
+      handleError(error);
     }
-  };
-
-  const fetchSingleProduct = async (url) => {
-    dispatch({ type: GET_SINGLE_PRODUCT_BEGIN });
-    try {
-      const response = await axios.get(url);
-      const product = response.data.product;
-      dispatch({ type: GET_SINGLE_PRODUCT_SUCCESS, payload: product });
-    } catch (error) {
-      dispatch({ type: GET_SINGLE_PRODUCT_ERROR });
-    }
+    setLoading(false);
   };
 
   const handleChange = ({ name, value }) => {
@@ -131,44 +130,89 @@ export const ProductsProvider = ({ children }) => {
 
   const setEditProduct = (id) => {
     dispatch({ type: SET_EDIT_PRODUCT, payload: { id } });
+    console.log(state.product);
   };
 
-  const editJob = async () => {
-    // dispatch({ type: EDIT_JOB_BEGIN });
-    // try {
-    //   const { position, company, jobLocation, jobType, status } = state;
-    //   await authFetch.patch(`/jobs/${state.editJobId}`, {
-    //     company,
-    //     position,
-    //     jobLocation,
-    //     jobType,
-    //     status,
-    //   });
-    //   dispatch({ type: EDIT_JOB_SUCCESS });
-    //   dispatch({ type: CLEAR_VALUES });
-    // } catch (error) {
-    //   if (error.response.status === 401) return;
-    //   dispatch({
-    //     type: EDIT_JOB_ERROR,
-    //     payload: { msg: error.response.data.msg },
-    //   });
-    // }
-    // clearAlert();
+  const uploadImage = async ({ file, isPrimary }) => {
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+      const config = {
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      };
+
+      const response = await authFetch.post(
+        `products/uploadImage`,
+        formData,
+        config
+      );
+      dispatch({
+        type: UPLOAD_IMAGE_SUCCESS,
+        payload: { imageUrl: response.data.image, isPrimary },
+      });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      handleError(error);
+    }
   };
 
-  const deleteJob = async (jobId) => {
-    // dispatch({ type: DELETE_JOB_BEGIN });
-    // try {
-    //   await authFetch.delete(`/jobs/${jobId}`);
-    //   getJobs();
-    // } catch (error) {
-    //   if (error.response.status === 401) return;
-    //   dispatch({
-    //     type: DELETE_JOB_ERROR,
-    //     payload: { msg: error.response.data.msg },
-    //   });
-    // }
-    // clearAlert();
+  const editProduct = async (values) => {
+    setLoading(true);
+    try {
+      await authFetch.patch(`/products/${state.product.id}`, {
+        ...values,
+        primaryImage: state.product.primaryImage,
+        secondaryImages: state.product.secondaryImages,
+      });
+      displayAlert({
+        alertType: ALERT_SUCCESS,
+        alertText: 'Product updated! Redirect...',
+      });
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
+  const createProduct = async (values) => {
+    setLoading(true);
+    try {
+      await authFetch.post('/products', {
+        ...values,
+        primaryImage: state.product.primaryImage,
+        secondaryImages: state.product.secondaryImages,
+      });
+      displayAlert({
+        alertType: ALERT_SUCCESS,
+        alertText: 'Product added! Redirect...',
+      });
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
+  const handleError = (error) => {
+    const msg = error.response.data.msg;
+    displayAlert({
+      alertType: ALERT_DANGER,
+      alertText: msg,
+    });
+  };
+
+  const deleteProduct = async (id) => {
+    setLoading(true);
+    try {
+      await authFetch.delete(`/products/${id}`);
+      getProducts();
+    } catch (error) {
+      if (error.response.status === 401) return;
+      handleError(error);
+    }
+    setLoading(false);
   };
 
   const createJob = async () => {
@@ -198,12 +242,15 @@ export const ProductsProvider = ({ children }) => {
     <ProductsContext.Provider
       value={{
         ...state,
-        fetchSingleProduct,
         clearFilters,
         getProducts,
         handleChange,
         changePage,
         setEditProduct,
+        uploadImage,
+        editProduct,
+        createProduct,
+        deleteProduct,
       }}
     >
       {children}

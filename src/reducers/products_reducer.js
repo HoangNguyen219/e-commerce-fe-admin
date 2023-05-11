@@ -1,26 +1,20 @@
 import {
   GET_PRODUCTS_SUCCESS,
-  GET_DATA_BEGIN,
   GET_DATA_SUCCESS,
-  GET_DATA_ERROR,
   CLEAR_FILTERS,
   HANDLE_CHANGE,
   CHANGE_PAGE,
   SET_EDIT_PRODUCT,
+  UPLOAD_IMAGE_SUCCESS,
 } from '../actions';
 
 const products_reducer = (state, action) => {
-  if (action.type === GET_DATA_BEGIN) {
-    return { ...state, loading: true };
-  }
-
   if (action.type === GET_DATA_SUCCESS) {
     const payload = action.payload;
     let maxPrice = payload.products.map((product) => product.price);
     maxPrice = Math.max(...maxPrice);
     return {
       ...state,
-      loading: false,
       products: payload.products,
       companies: payload.companies,
       categories: payload.categories,
@@ -30,14 +24,9 @@ const products_reducer = (state, action) => {
     };
   }
 
-  if (action.type === GET_DATA_ERROR) {
-    return { ...state, loading: false, error: true };
-  }
-
   if (action.type === GET_PRODUCTS_SUCCESS) {
     return {
       ...state,
-      loading: false,
       products: action.payload.products,
       totalProducts: action.payload.totalProducts,
       numOfPages: action.payload.numOfPages,
@@ -81,6 +70,17 @@ const products_reducer = (state, action) => {
       isEditing: true,
       product,
     };
+  }
+
+  if (action.type === UPLOAD_IMAGE_SUCCESS) {
+    const { imageUrl, isPrimary } = action.payload;
+    const updatedProduct = isPrimary
+      ? { ...state.product, primaryImage: imageUrl }
+      : {
+          ...state.product,
+          secondaryImages: [imageUrl, ...state.product.secondaryImages],
+        };
+    return { ...state, product: updatedProduct };
   }
 
   throw new Error(`No matching "${action.type}" - action type`);

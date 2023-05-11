@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Logo, FormRow, Alert } from '../components';
+import { Logo, FormRow, Alert, Loading } from '../components';
 import Wrapper from '../assets/wrappers/LoginPage';
 import { useUserContext } from '../context/user_context';
 import { useNavigate } from 'react-router-dom';
@@ -13,15 +13,7 @@ const initialState = {
 const LoginPage = () => {
   const navigate = useNavigate();
   const [values, setValues] = useState(initialState);
-  const {
-    loginUser,
-    user,
-    displayAlert,
-    showAlert,
-    isLoading,
-    alertType,
-    alertText,
-  } = useUserContext();
+  const { loginUser, user, displayAlert, isLoading, alert } = useUserContext();
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -50,7 +42,9 @@ const LoginPage = () => {
       <form className="form" onSubmit={onSubmit}>
         <Logo />
         <h3>Login</h3>
-        {showAlert && <Alert alertText={alertText} alertType={alertType} />}
+        {alert.showAlert && (
+          <Alert alertText={alert.alertText} alertType={alert.alertType} />
+        )}
 
         {/* email input */}
         <FormRow
@@ -66,6 +60,7 @@ const LoginPage = () => {
           value={values.password}
           handleChange={handleChange}
         />
+        {isLoading && <Loading />}
         <button type="submit" className="btn btn-block" disabled={isLoading}>
           Login
         </button>

@@ -3,6 +3,7 @@ import { useProductsContext } from '../context/product_context';
 import ListView from './ListView';
 import Loading from './Loading';
 import PageBtnContainer from './PageBtnContainer';
+import { useUserContext } from '../context/user_context';
 const ProductList = () => {
   const {
     products,
@@ -13,22 +14,33 @@ const ProductList = () => {
     color,
     price,
     shipping,
+    featured,
     sort,
     page,
     numOfPages,
     totalProducts,
-    loading,
-    error,
   } = useProductsContext();
+
+  const { isLoading, alert } = useUserContext();
   useEffect(() => {
     getProducts();
-  }, [page, text, categoryId, companyId, color, price, shipping, sort]);
+  }, [
+    page,
+    text,
+    categoryId,
+    companyId,
+    color,
+    price,
+    shipping,
+    featured,
+    sort,
+  ]);
 
-  if (loading) {
+  if (isLoading) {
     return <Loading />;
   }
 
-  if (error) {
+  if (alert.showAlert) {
     return <h2 style={{ textTransform: 'none' }}>There was an error...</h2>;
   }
 

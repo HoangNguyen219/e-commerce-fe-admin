@@ -1,33 +1,48 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   FormRow,
   FormRowSelect,
   Alert,
   Modal,
   FileInput,
+  Loading,
 } from '../../components';
 import { useProductsContext } from '../../context/product_context';
 import { useUserContext } from '../../context/user_context';
 import Wrapper from '../../assets/wrappers/DashboardFormPage';
 import { useState } from 'react';
-import { booleanList, colorsObj } from '../../utils/constants';
+import {
+  ALERT_DANGER,
+  ALERT_SUCCESS,
+  booleanList,
+  colorsObj,
+} from '../../utils/constants';
 import { FaTimes } from 'react-icons/fa';
 import { toInt } from '../../utils/helpers';
+import { useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
   const {
-    loading,
     isEditing,
-    createJob,
-    editJob,
+    createProduct,
+    editProduct,
     product,
     categories,
     companies,
     uploadImage,
   } = useProductsContext();
 
+  const { displayAlert, alert, isLoading } = useUserContext();
+
   const [showModal, setShowModal] = useState(false);
   const [deleteFn, setdeleteFn] = useState(null);
+
+  const [values, setValues] = useState({ ...product });
+  const [primaryImageFile, setPrimaryImageFile] = useState(null);
+  const [secondaryImagesFile, setSecondaryImagesFile] = useState([]);
+  const [isChangeImage, setIsChangeImage] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleShowModal = (callback, index) => {
     setShowModal(true);
@@ -38,13 +53,7 @@ const AddProduct = () => {
     setShowModal(false);
   };
 
-  const { showAlert, displayAlert, alertText, alertType } = useUserContext();
-
-  const [values, setValues] = useState(product);
-  const [primaryImageFile, setPrimaryImageFile] = useState(null);
-  const [secondaryImagesFile, setSecondaryImagesFile] = useState([]);
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let {
       name,
@@ -65,26 +74,90 @@ const AddProduct = () => {
       !colorStocks ||
       colorStocks.length === 0
     ) {
-      displayAlert('Please provide all values');
+      displayAlert({
+        alertText: 'Please provide all values',
+        alertType: ALERT_DANGER,
+      });
       return;
     }
     if (toInt(price) === -1) {
-      displayAlert('Please provide a valid number');
+      displayAlert({
+        alertText: 'Please provide a valid number',
+        alertType: ALERT_DANGER,
+      });
       return;
     }
     colorStocks.forEach((cs) => {
       if (toInt(cs.stock) === -1) {
-        displayAlert('Please provide a valid number');
+        displayAlert({
+          alertText: 'Please provide a valid number',
+          alertType: ALERT_DANGER,
+        });
         return;
       }
     });
 
-    if (primaryImageFile) {
-      uploadImage({ file: primaryImageFile, isPrimary: true });
+    const color = colorStocks.map((cs) => cs.color);
+    const set = new Set(color);
+    if (color.length !== set.size) {
+      displayAlert({
+        alertText: 'Duplicate color in Color Stock',
+        alertType: ALERT_DANGER,
+      });
+      return;
     }
 
-    // createJob();
+    if (!isEditing) {
+      setValues({
+        ...values,
+        categoryId: categoryId || categories[0].id,
+        companyId: companyId || companies[0].id,
+      });
+      if (!primaryImageFile) {
+        displayAlert({
+          alertText: 'Please provide all values',
+          alertType: ALERT_DANGER,
+        });
+      }
+    }
+
+    if (primaryImageFile) {
+      setIsChangeImage(true);
+      await uploadImage({ file: primaryImageFile, isPrimary: true });
+    }
+
+    if (secondaryImagesFile.length > 0) {
+      setIsChangeImage(true);
+      await Promise.all(
+        secondaryImagesFile.map(async (file) => {
+          await uploadImage({ file });
+        })
+      );
+    }
+
+    if (isEditing) {
+      editProduct(values);
+      return;
+    }
   };
+
+  useEffect(() => {
+    if (isChangeImage) {
+      if (isEditing) {
+        editProduct(values);
+      } else {
+        createProduct(values);
+      }
+    }
+  }, [product.primaryImage, product.secondaryImages]);
+
+  useEffect(() => {
+    if (alert.alertType === ALERT_SUCCESS) {
+      setTimeout(() => {
+        navigate('/products');
+      }, 2000);
+    }
+  }, [alert.alertType, navigate]);
 
   const handlePrimaryImageChange = (event) => {
     const file = event.target.files[0];
@@ -99,9 +172,7 @@ const AddProduct = () => {
     setSecondaryImagesFile([...secondaryImagesFile, ...files]);
     const secondaryImagesAdded = files.map((file) => URL.createObjectURL(file));
     setValues((values) => {
-      values.secondaryImages = values.secondaryImages
-        ? values.secondaryImages
-        : [];
+      values.secondaryImages = values.secondaryImages || [];
       return {
         ...values,
         secondaryImages: [...values.secondaryImages, ...secondaryImagesAdded],
@@ -144,7 +215,7 @@ const AddProduct = () => {
       values.colorStocks = values.colorStocks || [];
       return {
         ...values,
-        colorStocks: [...values.colorStocks, { color: '', stock: 0 }],
+        colorStocks: [...values.colorStocks, { color: 'black', stock: 0 }],
       };
     });
   };
@@ -322,13 +393,17 @@ const AddProduct = () => {
             multiple={true}
           />
         </div>
-        {showAlert && <Alert alertText={alertText} alertType={alertType} />}
+        {alert.showAlert && (
+          <Alert alertText={alert.alertText} alertType={alert.alertType} />
+        )}
+
+        {isLoading && <Loading />}
 
         <button
           type="submit"
           className="btn btn-block submit-btn"
           onClick={handleSubmit}
-          disabled={loading}
+          disabled={isLoading}
         >
           submit
         </button>

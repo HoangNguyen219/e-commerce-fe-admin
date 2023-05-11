@@ -3,24 +3,20 @@ import reducer from '../reducers/user_reducer';
 import {
   CLEAR_ALERT,
   DISPLAY_ALERT,
-  LOGIN_USER_BEGIN,
-  LOGIN_USER_ERROR,
   LOGIN_USER_SUCCESS,
   LOGOUT_USER,
+  SET_LOADING,
   TOGGLE_SIDEBAR,
 } from '../actions';
 import axios from 'axios';
-import { auth_url } from '../utils/constants';
+import { ALERT_DANGER, ALERT_SUCCESS, auth_url } from '../utils/constants';
 
 const user = localStorage.getItem('user');
 
 export const initialState = {
   showSidebar: false,
-  userLoading: true,
   isLoading: false,
-  showAlert: false,
-  alertText: '',
-  alertType: '',
+  alert: { showAlert: false, alertType: '', alertText: '' },
   user: user ? JSON.parse(user) : null,
 };
 
@@ -32,8 +28,8 @@ export const UserProvider = ({ children }) => {
     dispatch({ type: TOGGLE_SIDEBAR });
   };
 
-  const displayAlert = (message) => {
-    dispatch({ type: DISPLAY_ALERT, payload: message });
+  const displayAlert = ({ alertText, alertType }) => {
+    dispatch({ type: DISPLAY_ALERT, payload: { alertText, alertType } });
     clearAlert();
   };
 
@@ -41,6 +37,10 @@ export const UserProvider = ({ children }) => {
     setTimeout(() => {
       dispatch({ type: CLEAR_ALERT });
     }, 3000);
+  };
+
+  const setLoading = (isLoading) => {
+    dispatch({ type: SET_LOADING, payload: { isLoading } });
   };
 
   const addUserToLocalStorage = (user) => {
@@ -52,7 +52,7 @@ export const UserProvider = ({ children }) => {
   };
 
   const loginUser = async (currentUser) => {
-    dispatch({ type: LOGIN_USER_BEGIN });
+    setLoading(true);
     try {
       const response = await axios.post(`${auth_url}/login`, currentUser);
       const user = response.data.user;
@@ -61,21 +61,26 @@ export const UserProvider = ({ children }) => {
           type: LOGIN_USER_SUCCESS,
           payload: user,
         });
+        displayAlert({
+          alertType: ALERT_SUCCESS,
+          alertText: 'Login successful! Redirecting...',
+        });
         addUserToLocalStorage(user);
       } else {
-        dispatch({
-          type: LOGIN_USER_ERROR,
-          payload: 'Unauthorized to access this route',
+        displayAlert({
+          alertType: ALERT_DANGER,
+          alertText: 'Unauthorized to access this route',
         });
       }
     } catch (error) {
       console.log(error.response);
-      let msg = error.response.data.msg
-        ? error.response.data.msg
-        : error.message;
-      dispatch({ type: LOGIN_USER_ERROR, payload: msg });
+      let msg = error.response.data.msg || error.message;
+      displayAlert({
+        alertType: ALERT_DANGER,
+        alertText: msg,
+      });
     }
-    clearAlert();
+    setLoading(false);
   };
 
   const logoutUser = async () => {
@@ -94,6 +99,7 @@ export const UserProvider = ({ children }) => {
         loginUser,
         logoutUser,
         toggleSidebar,
+        setLoading,
       }}
     >
       {children}
