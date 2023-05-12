@@ -9,6 +9,8 @@ import {
   UPLOAD_IMAGE_SUCCESS,
   HANDLE_SHOW_MODAL,
   HANDLE_CLOSE_MODAL,
+  SET_EDIT_CATEGORY,
+  GET_CATEGORIES_SUCCESS,
 } from '../actions';
 import reducer from '../reducers/products_reducer';
 import React from 'react';
@@ -24,7 +26,7 @@ const initialState = {
   totalProducts: 0,
   numOfPages: 1,
   page: 1,
-  sort: 'price-lowest',
+  sort: 'latest',
   text: '',
   companyId: 'all',
   categoryId: 'all',
@@ -38,6 +40,8 @@ const initialState = {
   isEditting: false,
   showModal: false,
   deleteFn: null,
+  category: {},
+  company: {},
 };
 
 export const ProductsProvider = ({ children }) => {
@@ -76,17 +80,13 @@ export const ProductsProvider = ({ children }) => {
       const companies = companiesResponse.data.companies;
       dispatch({
         type: GET_DATA_SUCCESS,
-        payload: { products, categories, companies },
+        payload: { categories, products, companies },
       });
     } catch (error) {
       handleError(error);
     }
     setLoading(false);
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const getProducts = async () => {
     const {
@@ -120,6 +120,25 @@ export const ProductsProvider = ({ children }) => {
     setLoading(false);
   };
 
+  const getCategories = async () => {
+    const { text, sort } = state;
+    let url = `/categories?text=${text}&sort=${sort}`;
+    setLoading(true);
+    try {
+      const { data } = await authFetch.get(url);
+      const { categories } = data;
+      dispatch({
+        type: GET_CATEGORIES_SUCCESS,
+        payload: {
+          categories,
+        },
+      });
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
   const handleChange = ({ name, value }) => {
     dispatch({ type: HANDLE_CHANGE, payload: { name, value } });
   };
@@ -134,7 +153,10 @@ export const ProductsProvider = ({ children }) => {
 
   const setEditProduct = (id) => {
     dispatch({ type: SET_EDIT_PRODUCT, payload: { id } });
-    console.log(state.product);
+  };
+
+  const setEditCategory = (id) => {
+    dispatch({ type: SET_EDIT_CATEGORY, payload: { id } });
   };
 
   const uploadImage = async ({ file, isPrimary }) => {
@@ -219,6 +241,50 @@ export const ProductsProvider = ({ children }) => {
     setLoading(false);
   };
 
+  const editCategory = async (values) => {
+    setLoading(true);
+    try {
+      await authFetch.patch(`/categories/${state.category.id}`, {
+        ...values,
+      });
+      displayAlert({
+        alertType: ALERT_SUCCESS,
+        alertText: 'Category updated! Redirect...',
+      });
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
+  const createCategory = async (values) => {
+    setLoading(true);
+    try {
+      await authFetch.post('/categories', {
+        ...values,
+      });
+      displayAlert({
+        alertType: ALERT_SUCCESS,
+        alertText: 'Category added! Redirect...',
+      });
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
+  const deleteCategory = async (id) => {
+    setLoading(true);
+    try {
+      await authFetch.delete(`/categories/${id}`);
+      getCategories();
+    } catch (error) {
+      if (error.response.status === 401) return;
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
   const handleShowModal = (callback, index) => {
     dispatch({ type: HANDLE_SHOW_MODAL, payload: { callback, index } });
   };
@@ -242,6 +308,12 @@ export const ProductsProvider = ({ children }) => {
         deleteProduct,
         handleShowModal,
         handleCloseModal,
+        setEditCategory,
+        editCategory,
+        createCategory,
+        getCategories,
+        fetchData,
+        deleteCategory,
       }}
     >
       {children}

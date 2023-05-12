@@ -8,18 +8,21 @@ import {
   UPLOAD_IMAGE_SUCCESS,
   HANDLE_SHOW_MODAL,
   HANDLE_CLOSE_MODAL,
+  SET_EDIT_CATEGORY,
+  SET_EDIT_COMPANY,
+  GET_CATEGORIES_SUCCESS,
 } from '../actions';
 
 const products_reducer = (state, action) => {
   if (action.type === GET_DATA_SUCCESS) {
-    const payload = action.payload;
-    let maxPrice = payload.products.map((product) => product.price);
+    const { products, categories, companies } = action.payload;
+    let maxPrice = products.map((product) => product.price);
     maxPrice = Math.max(...maxPrice);
     return {
       ...state,
-      products: payload.products,
-      companies: payload.companies,
-      categories: payload.categories,
+      products,
+      categories,
+      companies,
       ...state.filters,
       max_price: maxPrice,
       price: maxPrice,
@@ -27,11 +30,21 @@ const products_reducer = (state, action) => {
   }
 
   if (action.type === GET_PRODUCTS_SUCCESS) {
+    const { products, totalProducts, numOfPages } = action.payload;
     return {
       ...state,
-      products: action.payload.products,
-      totalProducts: action.payload.totalProducts,
-      numOfPages: action.payload.numOfPages,
+      products,
+      totalProducts,
+      numOfPages,
+    };
+  }
+
+  if (action.type === GET_CATEGORIES_SUCCESS) {
+    const { categories } = action.payload;
+
+    return {
+      ...state,
+      categories,
     };
   }
 
@@ -42,9 +55,9 @@ const products_reducer = (state, action) => {
       company: 'all',
       category: 'all',
       color: 'all',
-      price: state.filters.max_price,
-      shipping: false,
-      feature: false,
+      price: state.max_price,
+      shipping: 'all',
+      featured: 'all',
       sort: 'price-lowest',
     };
   }
@@ -71,6 +84,28 @@ const products_reducer = (state, action) => {
       ...state,
       isEditing: true,
       product,
+    };
+  }
+
+  if (action.type === SET_EDIT_CATEGORY) {
+    const category = state.categories.find(
+      (category) => category.id === action.payload.id
+    );
+    return {
+      ...state,
+      isEditing: true,
+      category,
+    };
+  }
+
+  if (action.type === SET_EDIT_COMPANY) {
+    const company = state.companies.find(
+      (company) => company.id === action.payload.id
+    );
+    return {
+      ...state,
+      isEditing: true,
+      company,
     };
   }
 

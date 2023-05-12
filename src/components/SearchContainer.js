@@ -10,6 +10,7 @@ import { useUserContext } from '../context/user_context';
 
 const SearchContainer = () => {
   const {
+    text,
     categoryId,
     companyId,
     color,
@@ -26,8 +27,8 @@ const SearchContainer = () => {
   } = useProductsContext();
 
   const { isLoading } = useUserContext();
-  const [localSearch, setLocalSearch] = useState('');
-  const [localPrice, setLocalPrice] = useState(0);
+  const [localSearch, setLocalSearch] = useState(text);
+  const [localPrice, setLocalPrice] = useState(price);
 
   const categoriesAddAll = addAll(categories);
   const companiesAddAll = addAll(companies);
@@ -37,6 +38,10 @@ const SearchContainer = () => {
   useEffect(() => {
     setLocalPrice(price);
   }, [price]);
+
+  useEffect(() => {
+    setLocalSearch(text);
+  }, [text]);
 
   const handleSearch = (e) => {
     let name = e.target.name;

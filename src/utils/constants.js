@@ -35,14 +35,21 @@ const colors = [
 ];
 
 export const sorts = [
+  { id: 'latest', name: 'Latest' },
+  { id: 'oldest', name: 'Oldest' },
   { id: 'price-lowest', name: 'Price (Lowest)' },
   { id: 'price-highest', name: 'Price (Highest)' },
   { id: 'a-z', name: 'Name (A-Z)' },
   { id: 'z-a', name: 'Name (Z-A)' },
-  { id: 'latest', name: 'Lastest' },
-  { id: 'oldest', name: 'Oldest' },
   { id: 'rating-lowest', name: 'Rating (Lowest)' },
   { id: 'rating-highest', name: 'Rating (Highest)' },
+];
+
+export const categorySorts = [
+  { id: 'latest', name: 'Latest' },
+  { id: 'oldest', name: 'Oldest' },
+  { id: 'a-z', name: 'Name (A-Z)' },
+  { id: 'z-a', name: 'Name (Z-A)' },
 ];
 
 export const booleanList = [

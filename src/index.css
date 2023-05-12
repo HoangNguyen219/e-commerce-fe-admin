@@ -350,3 +350,44 @@ input[type=file] {
     margin-right: 0.5rem;
   }
 }
+
+table {
+  border-collapse: collapse;
+  /* min-width: 800px !important; */
+  width: 100%;
+  background: var(--white);
+}
+
+thead {
+  background: var(--primary-500);
+
+}
+
+tr {
+  margin-bottom: 1rem;
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: var(--borderRadius);
+}
+
+th {
+  border: none;
+  align-items: start;
+  padding: 1rem;
+  font-weight: 500;
+  color: var(--white);
+  text-align: left;
+}
+
+td {
+  border: none;
+  padding: 1rem;
+  border-bottom: 4px solid var(--grey-50);
+  vertical-align: middle;
+}
+
+.mg-left {
+  margin-left: 1rem;
+}

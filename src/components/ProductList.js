@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useProductsContext } from '../context/product_context';
 import ListView from './ListView';
 import Loading from './Loading';
@@ -49,8 +50,11 @@ const ProductList = () => {
   }
   return (
     <>
-      <h5>
-        {totalProducts} product{products.length > 1 && 's'} found
+      <h5 className="inline">
+        {totalProducts} product{totalProducts > 1 && 's'} found
+        <Link to="/add-product" className="btn btn-safe mg-left">
+          Add Product
+        </Link>
       </h5>
       <ListView products={products} />
       {numOfPages > 1 && <PageBtnContainer />}

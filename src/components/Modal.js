@@ -1,12 +1,13 @@
 import React from 'react';
 import Wrapper from '../assets/wrappers/Modal';
 
-const Modal = ({ handleCloseModal, handleDeleteItem }) => {
+const Modal = ({ handleCloseModal, handleDeleteItem, message }) => {
   return (
     <Wrapper>
       <div className="modal" onClick={handleCloseModal}>
         <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-          <p>Delete this item?</p>
+          <p>{message || 'Delete this item?'}</p>
+
           <div className="btn-modal">
             <button className="btn btn-safe mg" onClick={handleCloseModal}>
               Cancel

@@ -11,6 +11,7 @@ import SearchContainer from './SearchContainer';
 import ProductList from './ProductList';
 import Modal from './Modal';
 import FileInput from './FileInput';
+import CategoryList from './CategoryList';
 
 export {
   Alert,
@@ -26,4 +27,5 @@ export {
   ProductList,
   Modal,
   FileInput,
+  CategoryList,
 };
