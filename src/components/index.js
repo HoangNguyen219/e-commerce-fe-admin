@@ -12,6 +12,7 @@ import ProductList from './ProductList';
 import Modal from './Modal';
 import FileInput from './FileInput';
 import CategoryList from './CategoryList';
+import AddButton from './AddButton';
 
 export {
   Alert,
@@ -28,4 +29,5 @@ export {
   Modal,
   FileInput,
   CategoryList,
+  AddButton,
 };

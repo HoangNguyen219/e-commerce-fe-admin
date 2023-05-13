@@ -4,18 +4,20 @@ import { FormRow, CategoryList, FormRowSelect } from '../../components';
 import { categorySorts } from '../../utils/constants';
 import { useProductsContext } from '../../context/product_context';
 
-const CategoriesPage = () => {
-  useEffect(() => {
-    handleChange({ name: 'text', value: '' });
-  }, []);
-
+const CategoriesPage = ({ typePath }) => {
   const {
     handleChange,
     text,
     isLoading,
     clearFilters,
     sort,
+    setTypePath,
   } = useProductsContext();
+
+  useEffect(() => {
+    setTypePath(typePath);
+    handleChange({ name: 'text', value: '' });
+  }, [typePath]);
 
   const [localSearch, setLocalSearch] = useState(text);
 

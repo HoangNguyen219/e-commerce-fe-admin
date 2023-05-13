@@ -42,11 +42,18 @@ const ProductList = () => {
   }
 
   if (alert.showAlert) {
-    return <h2 style={{ textTransform: 'none' }}>There was an error...</h2>;
+    return <h5 style={{ textTransform: 'none' }}>There was an error...</h5>;
   }
 
   if (products.length < 1) {
-    return <h2 style={{ textTransform: 'none' }}>No products to display...</h2>;
+    return (
+      <h5 style={{ textTransform: 'none' }}>
+        No products to display...
+        <Link to="/add-product" className="btn btn-safe mg-left">
+          Add Product
+        </Link>
+      </h5>
+    );
   }
   return (
     <>

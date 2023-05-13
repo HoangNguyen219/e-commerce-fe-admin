@@ -70,6 +70,9 @@ export const DECREASE = 'decrease';
 export const ALERT_DANGER = 'danger';
 export const ALERT_SUCCESS = 'success';
 
+export const CATEGORIES = 'categories';
+export const COMPANY = 'companies';
+
 export const baseUrl = '/api/v1/';
 export const auth_url = '/api/v1/auth';
 

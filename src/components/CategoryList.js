@@ -1,40 +1,49 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { useProductsContext } from '../context/product_context';
 import Category from './Category';
 import Loading from './Loading';
+import AddButton from './AddButton';
 import { useUserContext } from '../context/user_context';
+import { CATEGORIES } from '../utils/constants';
 const CategoryList = () => {
-  const { categories, getCategories, text, sort } = useProductsContext();
+  const {
+    dataCatCom,
+    getCategories,
+    text,
+    sort,
+    typePath,
+  } = useProductsContext();
   const { isLoading, alert } = useUserContext();
 
   useEffect(() => {
     getCategories();
-  }, [text, sort]);
+  }, [text, sort, typePath]);
 
   if (isLoading) {
     return <Loading />;
   }
 
   if (alert.showAlert) {
-    return <h2 style={{ textTransform: 'none' }}>There was an error...</h2>;
+    return <h5 style={{ textTransform: 'none' }}>There was an error...</h5>;
   }
 
-  if (categories.length < 1) {
+  if (dataCatCom.length < 1) {
     return (
-      <h2 style={{ textTransform: 'none' }}>No categories to display...</h2>
+      <h5 style={{ textTransform: 'none' }}>
+        No {typePath} to display...
+        <AddButton />
+      </h5>
     );
   }
   return (
     <>
       <h5 className="inline">
-        {categories.length} categor{categories.length > 1 ? 'ies' : 'y'} found
-        <Link to="/add-category" className="btn btn-safe mg-left">
-          Add Category
-        </Link>
+        {dataCatCom.length} {typePath === CATEGORIES ? 'categor' : 'compan'}
+        {dataCatCom.length > 1 ? 'ies' : 'y'} found
+        <AddButton />
       </h5>
 
-      <Category categories={categories} />
+      <Category categories={dataCatCom} />
     </>
   );
 };

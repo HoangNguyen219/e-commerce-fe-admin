@@ -9,11 +9,19 @@ import {
   HANDLE_SHOW_MODAL,
   HANDLE_CLOSE_MODAL,
   SET_EDIT_CATEGORY,
-  SET_EDIT_COMPANY,
   GET_CATEGORIES_SUCCESS,
+  CHANGE_TYPE_PATH,
 } from '../actions';
 
 const products_reducer = (state, action) => {
+  if (action.type === CHANGE_TYPE_PATH) {
+    const { typePath } = action.payload;
+    return {
+      ...state,
+      typePath,
+    };
+  }
+
   if (action.type === GET_DATA_SUCCESS) {
     const { products, categories, companies } = action.payload;
     let maxPrice = products.map((product) => product.price);
@@ -40,11 +48,11 @@ const products_reducer = (state, action) => {
   }
 
   if (action.type === GET_CATEGORIES_SUCCESS) {
-    const { categories } = action.payload;
+    const { dataCatCom } = action.payload;
 
     return {
       ...state,
-      categories,
+      dataCatCom,
     };
   }
 
@@ -88,24 +96,13 @@ const products_reducer = (state, action) => {
   }
 
   if (action.type === SET_EDIT_CATEGORY) {
-    const category = state.categories.find(
+    const category = state.dataCatCom.find(
       (category) => category.id === action.payload.id
     );
     return {
       ...state,
       isEditing: true,
       category,
-    };
-  }
-
-  if (action.type === SET_EDIT_COMPANY) {
-    const company = state.companies.find(
-      (company) => company.id === action.payload.id
-    );
-    return {
-      ...state,
-      isEditing: true,
-      company,
     };
   }
 

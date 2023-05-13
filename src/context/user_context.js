@@ -1,6 +1,7 @@
 import React, { useContext, useReducer } from 'react';
 import reducer from '../reducers/user_reducer';
 import {
+  CHANGE_TYPE_PATH,
   CLEAR_ALERT,
   DISPLAY_ALERT,
   LOGIN_USER_SUCCESS,

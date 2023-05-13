@@ -1,22 +1,28 @@
 import React, { useEffect } from 'react';
 import { FormRow, Alert, Loading } from '../../components';
 import { useProductsContext } from '../../context/product_context';
-import { useUserContext } from '../../context/user_context';
 import Wrapper from '../../assets/wrappers/DashboardFormPage';
 import { useState } from 'react';
-import { ALERT_DANGER, ALERT_SUCCESS } from '../../utils/constants';
+import { ALERT_DANGER, ALERT_SUCCESS, CATEGORIES } from '../../utils/constants';
 import { useNavigate } from 'react-router-dom';
+import { useUserContext } from '../../context/user_context';
 
-const AddCategory = () => {
+const AddCategory = ({ typePath }) => {
   const {
     isEditing,
     category,
     editCategory,
     createCategory,
+    setTypePath,
   } = useProductsContext();
 
-  const { displayAlert, alert, isLoading } = useUserContext();
+  const { isLoading, alert, displayAlert } = useUserContext();
+
   const [values, setValues] = useState({ ...category });
+
+  useEffect(() => {
+    setTypePath(typePath);
+  }, [typePath]);
 
   const navigate = useNavigate();
 
@@ -47,7 +53,7 @@ const AddCategory = () => {
   useEffect(() => {
     if (alert.alertType === ALERT_SUCCESS) {
       setTimeout(() => {
-        navigate('/categories');
+        navigate(`/${typePath}`);
       }, 2000);
     }
   }, [alert.alertType, navigate]);
@@ -55,7 +61,10 @@ const AddCategory = () => {
   return (
     <Wrapper>
       <form className="form">
-        <h3>{isEditing ? 'edit' : 'add'} category</h3>
+        <h3>
+          {isEditing ? 'edit' : 'add'}{' '}
+          {typePath === CATEGORIES ? 'category' : 'company'}
+        </h3>
         <div className="form-center">
           {/* name */}
           <FormRow

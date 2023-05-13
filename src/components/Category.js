@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Wrapper from '../assets/wrappers/ListView';
 import { useProductsContext } from '../context/product_context';
 import Modal from './Modal';
+import { CATEGORIES } from '../utils/constants';
 
 const Category = ({ categories }) => {
   const {
@@ -12,6 +13,7 @@ const Category = ({ categories }) => {
     handleCloseModal,
     deleteFn,
     handleShowModal,
+    typePath,
   } = useProductsContext();
 
   return (
@@ -43,7 +45,11 @@ const Category = ({ categories }) => {
                 <td>
                   <div className="actions">
                     <Link
-                      to="/add-category"
+                      to={
+                        typePath === CATEGORIES
+                          ? '/add-category'
+                          : '/add-company'
+                      }
                       className="btn btn-safe"
                       onClick={() => setEditCategory(id)}
                     >

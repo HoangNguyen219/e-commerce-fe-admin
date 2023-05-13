@@ -1,4 +1,4 @@
-import { useContext, useEffect, useReducer } from 'react';
+import { useContext, useReducer } from 'react';
 import {
   GET_PRODUCTS_SUCCESS,
   CLEAR_FILTERS,
@@ -11,6 +11,7 @@ import {
   HANDLE_CLOSE_MODAL,
   SET_EDIT_CATEGORY,
   GET_CATEGORIES_SUCCESS,
+  CHANGE_TYPE_PATH,
 } from '../actions';
 import reducer from '../reducers/products_reducer';
 import React from 'react';
@@ -41,7 +42,8 @@ const initialState = {
   showModal: false,
   deleteFn: null,
   category: {},
-  company: {},
+  dataCatCom: [],
+  typePath: 'categories',
 };
 
 export const ProductsProvider = ({ children }) => {
@@ -63,6 +65,11 @@ export const ProductsProvider = ({ children }) => {
       return Promise.reject(error);
     }
   );
+
+  const setTypePath = (typePath) => {
+    dispatch({ type: CHANGE_TYPE_PATH, payload: { typePath } });
+  };
+
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -122,15 +129,17 @@ export const ProductsProvider = ({ children }) => {
 
   const getCategories = async () => {
     const { text, sort } = state;
-    let url = `/categories?text=${text}&sort=${sort}`;
+    let url = `/${state.typePath}?text=${text}&sort=${sort}`;
+    console.log(url);
     setLoading(true);
     try {
       const { data } = await authFetch.get(url);
-      const { categories } = data;
+      const dataCatCom = data[state.typePath];
+      console.log(data);
       dispatch({
         type: GET_CATEGORIES_SUCCESS,
         payload: {
-          categories,
+          dataCatCom,
         },
       });
     } catch (error) {
@@ -244,12 +253,12 @@ export const ProductsProvider = ({ children }) => {
   const editCategory = async (values) => {
     setLoading(true);
     try {
-      await authFetch.patch(`/categories/${state.category.id}`, {
+      await authFetch.patch(`/${state.typePath}/${state.category.id}`, {
         ...values,
       });
       displayAlert({
         alertType: ALERT_SUCCESS,
-        alertText: 'Category updated! Redirect...',
+        alertText: 'Item updated! Redirect...',
       });
     } catch (error) {
       handleError(error);
@@ -260,12 +269,12 @@ export const ProductsProvider = ({ children }) => {
   const createCategory = async (values) => {
     setLoading(true);
     try {
-      await authFetch.post('/categories', {
+      await authFetch.post(`/${state.typePath}`, {
         ...values,
       });
       displayAlert({
         alertType: ALERT_SUCCESS,
-        alertText: 'Category added! Redirect...',
+        alertText: 'Item added! Redirect...',
       });
     } catch (error) {
       handleError(error);
@@ -276,7 +285,7 @@ export const ProductsProvider = ({ children }) => {
   const deleteCategory = async (id) => {
     setLoading(true);
     try {
-      await authFetch.delete(`/categories/${id}`);
+      await authFetch.delete(`/${state.typePath}/${id}`);
       getCategories();
     } catch (error) {
       if (error.response.status === 401) return;
@@ -314,6 +323,7 @@ export const ProductsProvider = ({ children }) => {
         getCategories,
         fetchData,
         deleteCategory,
+        setTypePath,
       }}
     >
       {children}
