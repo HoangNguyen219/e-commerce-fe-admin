@@ -25,3 +25,6 @@ export const HANDLE_SHOW_MODAL = 'HANDLE_SHOW_MODAL';
 export const HANDLE_CLOSE_MODAL = 'HANDLE_CLOSE_MODAL';
 
 export const CHANGE_TYPE_PATH = 'CHANGE_TYPE_PATH';
+
+export const UNSET_EDIT = 'UNSET_EDIT';
+export const SET_ERROR = 'SET_ERROR';

@@ -51,9 +51,14 @@ const ListView = ({ products }) => {
                 >
                   Delete
                 </button>
-                <Link to={`${store_url}/products/${id}`} className="btn">
+                <a
+                  href={`${store_url}/products/${id}`}
+                  className="btn"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Live View
-                </Link>
+                </a>
               </div>
             </div>
           </article>

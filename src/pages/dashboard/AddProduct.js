@@ -40,7 +40,7 @@ const AddProduct = () => {
   const [values, setValues] = useState({ ...product });
   const [primaryImageFile, setPrimaryImageFile] = useState(null);
   const [secondaryImagesFile, setSecondaryImagesFile] = useState([]);
-  const [isChangeImage, setIsChangeImage] = useState(false);
+  const [isReadySubmit, setIsReadySubmit] = useState(false);
 
   const navigate = useNavigate();
 
@@ -109,34 +109,28 @@ const AddProduct = () => {
     }
 
     if (primaryImageFile) {
-      setIsChangeImage(true);
       await uploadImage({ file: primaryImageFile, isPrimary: true });
     }
 
     if (secondaryImagesFile.length > 0) {
-      setIsChangeImage(true);
       await Promise.all(
         secondaryImagesFile.map(async (file) => {
           await uploadImage({ file });
         })
       );
     }
-
-    if (isEditing) {
-      editProduct(values);
-      return;
-    }
+    setIsReadySubmit(true);
   };
 
   useEffect(() => {
-    if (isChangeImage) {
+    if (isReadySubmit) {
       if (isEditing) {
         editProduct(values);
       } else {
         createProduct(values);
       }
     }
-  }, [product.primaryImage, product.secondaryImages]);
+  }, [isReadySubmit]);
 
   useEffect(() => {
     if (alert.alertType === ALERT_SUCCESS) {
@@ -342,7 +336,7 @@ const AddProduct = () => {
             Primary image
           </label>
           {values.primaryImage && (
-            <img src={values.primaryImage} alt="Primary image" />
+            <img src={values.primaryImage} alt="Primary" />
           )}
           <FileInput
             handleFileSelected={handlePrimaryImageChange}
@@ -359,7 +353,7 @@ const AddProduct = () => {
                 <div key={index} className="img-item">
                   <img
                     src={url}
-                    alt={`Secondary image ${index}`}
+                    alt={`Secondary ${index}`}
                     style={{ maxWidth: '100px', maxHeight: '100px' }}
                   />
                   <button

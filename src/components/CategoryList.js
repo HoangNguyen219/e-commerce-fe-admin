@@ -13,7 +13,7 @@ const CategoryList = () => {
     sort,
     typePath,
   } = useProductsContext();
-  const { isLoading, alert } = useUserContext();
+  const { isLoading, isError } = useUserContext();
 
   useEffect(() => {
     getCategories();
@@ -23,16 +23,16 @@ const CategoryList = () => {
     return <Loading />;
   }
 
-  if (alert.showAlert) {
-    return <h5 style={{ textTransform: 'none' }}>There was an error...</h5>;
+  if (isError) {
+    return <h4 style={{ textTransform: 'none' }}>There was an error...</h4>;
   }
 
   if (dataCatCom.length < 1) {
     return (
-      <h5 style={{ textTransform: 'none' }}>
+      <h4 style={{ textTransform: 'none' }}>
         No {typePath} to display...
         <AddButton />
-      </h5>
+      </h4>
     );
   }
   return (

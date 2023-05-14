@@ -12,6 +12,7 @@ const CategoriesPage = ({ typePath }) => {
     clearFilters,
     sort,
     setTypePath,
+    unsetEdit,
   } = useProductsContext();
 
   useEffect(() => {
@@ -20,6 +21,10 @@ const CategoriesPage = ({ typePath }) => {
   }, [typePath]);
 
   const [localSearch, setLocalSearch] = useState(text);
+
+  useEffect(() => {
+    unsetEdit();
+  }, []);
 
   useEffect(() => {
     setLocalSearch(text);

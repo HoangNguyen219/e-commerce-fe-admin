@@ -12,12 +12,14 @@ import {
   SET_EDIT_CATEGORY,
   GET_CATEGORIES_SUCCESS,
   CHANGE_TYPE_PATH,
+  UNSET_EDIT,
 } from '../actions';
 import reducer from '../reducers/products_reducer';
 import React from 'react';
 import axios from 'axios';
-import { ALERT_DANGER, ALERT_SUCCESS, baseUrl } from '../utils/constants';
+import { ALERT_SUCCESS, baseUrl } from '../utils/constants';
 import { useUserContext } from './user_context';
+import { useEffect } from 'react';
 
 const ProductsContext = React.createContext();
 const initialState = {
@@ -37,8 +39,8 @@ const initialState = {
   price: 0,
   shipping: 'all',
   featured: 'all',
-  product: {},
-  isEditting: false,
+  product: { secondaryImages: [] },
+  isEditing: false,
   showModal: false,
   deleteFn: null,
   category: {},
@@ -48,7 +50,13 @@ const initialState = {
 
 export const ProductsProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { logoutUser, displayAlert, setLoading } = useUserContext();
+  const {
+    logoutUser,
+    displayAlert,
+    setLoading,
+    handleError,
+    setError,
+  } = useUserContext();
 
   const authFetch = axios.create({
     baseURL: baseUrl,
@@ -89,6 +97,7 @@ export const ProductsProvider = ({ children }) => {
         type: GET_DATA_SUCCESS,
         payload: { categories, products, companies },
       });
+      setError(false);
     } catch (error) {
       handleError(error);
     }
@@ -121,6 +130,7 @@ export const ProductsProvider = ({ children }) => {
           numOfPages,
         },
       });
+      setError(false);
     } catch (error) {
       handleError(error);
     }
@@ -142,7 +152,9 @@ export const ProductsProvider = ({ children }) => {
           dataCatCom,
         },
       });
+      setError(false);
     } catch (error) {
+      console.log('============');
       handleError(error);
     }
     setLoading(false);
@@ -168,6 +180,10 @@ export const ProductsProvider = ({ children }) => {
     dispatch({ type: SET_EDIT_CATEGORY, payload: { id } });
   };
 
+  const unsetEdit = () => {
+    dispatch({ type: UNSET_EDIT });
+  };
+
   const uploadImage = async ({ file, isPrimary }) => {
     setLoading(true);
     try {
@@ -188,6 +204,7 @@ export const ProductsProvider = ({ children }) => {
         type: UPLOAD_IMAGE_SUCCESS,
         payload: { imageUrl: response.data.image, isPrimary },
       });
+      setError(false);
     } catch (error) {
       if (error.response.status === 401) return;
       handleError(error);
@@ -206,6 +223,7 @@ export const ProductsProvider = ({ children }) => {
         alertType: ALERT_SUCCESS,
         alertText: 'Product updated! Redirect...',
       });
+      setError(false);
     } catch (error) {
       handleError(error);
     }
@@ -224,24 +242,19 @@ export const ProductsProvider = ({ children }) => {
         alertType: ALERT_SUCCESS,
         alertText: 'Product added! Redirect...',
       });
+      setError(false);
     } catch (error) {
       handleError(error);
     }
     setLoading(false);
   };
 
-  const handleError = (error) => {
-    const msg = error.response.data.msg;
-    displayAlert({
-      alertType: ALERT_DANGER,
-      alertText: msg,
-    });
-  };
-
   const deleteProduct = async (id) => {
     setLoading(true);
     try {
       await authFetch.delete(`/products/${id}`);
+      setError(false);
+
       getProducts();
     } catch (error) {
       if (error.response.status === 401) return;
@@ -260,6 +273,7 @@ export const ProductsProvider = ({ children }) => {
         alertType: ALERT_SUCCESS,
         alertText: 'Item updated! Redirect...',
       });
+      setError(false);
     } catch (error) {
       handleError(error);
     }
@@ -276,6 +290,7 @@ export const ProductsProvider = ({ children }) => {
         alertType: ALERT_SUCCESS,
         alertText: 'Item added! Redirect...',
       });
+      setError(false);
     } catch (error) {
       handleError(error);
     }
@@ -286,6 +301,8 @@ export const ProductsProvider = ({ children }) => {
     setLoading(true);
     try {
       await authFetch.delete(`/${state.typePath}/${id}`);
+      setError(false);
+
       getCategories();
     } catch (error) {
       if (error.response.status === 401) return;
@@ -301,6 +318,10 @@ export const ProductsProvider = ({ children }) => {
   const handleCloseModal = () => {
     dispatch({ type: HANDLE_CLOSE_MODAL });
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <ProductsContext.Provider
@@ -324,6 +345,7 @@ export const ProductsProvider = ({ children }) => {
         fetchData,
         deleteCategory,
         setTypePath,
+        unsetEdit,
       }}
     >
       {children}

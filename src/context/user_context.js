@@ -1,11 +1,11 @@
 import React, { useContext, useReducer } from 'react';
 import reducer from '../reducers/user_reducer';
 import {
-  CHANGE_TYPE_PATH,
   CLEAR_ALERT,
   DISPLAY_ALERT,
   LOGIN_USER_SUCCESS,
   LOGOUT_USER,
+  SET_ERROR,
   SET_LOADING,
   TOGGLE_SIDEBAR,
 } from '../actions';
@@ -19,6 +19,7 @@ export const initialState = {
   isLoading: false,
   alert: { showAlert: false, alertType: '', alertText: '' },
   user: user ? JSON.parse(user) : null,
+  isError: false,
 };
 
 const UserContext = React.createContext();
@@ -66,6 +67,7 @@ export const UserProvider = ({ children }) => {
           alertType: ALERT_SUCCESS,
           alertText: 'Login successful! Redirecting...',
         });
+        setError(false);
         addUserToLocalStorage(user);
       } else {
         displayAlert({
@@ -74,12 +76,7 @@ export const UserProvider = ({ children }) => {
         });
       }
     } catch (error) {
-      console.log(error.response);
-      let msg = error.response.data.msg || error.message;
-      displayAlert({
-        alertType: ALERT_DANGER,
-        alertText: msg,
-      });
+      handleError(error);
     }
     setLoading(false);
   };
@@ -92,6 +89,19 @@ export const UserProvider = ({ children }) => {
     removeUserFromLocalStorage();
   };
 
+  const setError = (isError) => {
+    dispatch({ type: SET_ERROR, payload: { isError } });
+  };
+
+  const handleError = (error) => {
+    const msg = error.response ? error.response.data.msg : '';
+    displayAlert({
+      alertType: ALERT_DANGER,
+      alertText: msg,
+    });
+    setError(true);
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -101,6 +111,8 @@ export const UserProvider = ({ children }) => {
         logoutUser,
         toggleSidebar,
         setLoading,
+        handleError,
+        setError,
       }}
     >
       {children}

@@ -65,7 +65,7 @@ const AddCategory = ({ typePath }) => {
           {isEditing ? 'edit' : 'add'}{' '}
           {typePath === CATEGORIES ? 'category' : 'company'}
         </h3>
-        <div className="form-center">
+        <div>
           {/* name */}
           <FormRow
             type="text"

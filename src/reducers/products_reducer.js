@@ -11,6 +11,7 @@ import {
   SET_EDIT_CATEGORY,
   GET_CATEGORIES_SUCCESS,
   CHANGE_TYPE_PATH,
+  UNSET_EDIT,
 } from '../actions';
 
 const products_reducer = (state, action) => {
@@ -19,6 +20,15 @@ const products_reducer = (state, action) => {
     return {
       ...state,
       typePath,
+    };
+  }
+
+  if (action.type === UNSET_EDIT) {
+    return {
+      ...state,
+      isEditing: false,
+      product: {},
+      category: {},
     };
   }
 

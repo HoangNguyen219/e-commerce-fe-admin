@@ -3,10 +3,10 @@ import { ProductList, SearchContainer } from '../../components';
 import { useProductsContext } from '../../context/product_context';
 
 const ProductsPage = () => {
-  const { fetchData, handleChange } = useProductsContext();
+  const { handleChange, unsetEdit } = useProductsContext();
   useEffect(() => {
     handleChange({ name: 'text', value: '' });
-    fetchData();
+    unsetEdit();
   }, []);
   return (
     <>

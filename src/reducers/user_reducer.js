@@ -1,9 +1,9 @@
 import {
-  CHANGE_TYPE_PATH,
   CLEAR_ALERT,
   DISPLAY_ALERT,
   LOGIN_USER_SUCCESS,
   LOGOUT_USER,
+  SET_ERROR,
   SET_LOADING,
   TOGGLE_SIDEBAR,
 } from '../actions';
@@ -43,6 +43,14 @@ const user_reducer = (state, action) => {
     return {
       ...state,
       isLoading,
+    };
+  }
+
+  if (action.type === SET_ERROR) {
+    const { isError } = action.payload;
+    return {
+      ...state,
+      isError,
     };
   }
 

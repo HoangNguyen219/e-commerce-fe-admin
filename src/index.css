@@ -273,6 +273,10 @@ input[type=file] {
   margin-bottom: 1rem;
 }
 
+.form-select {
+  text-transform: capitalize;
+}
+
 .form-textarea {
   height: 7rem;
   resize: none;
@@ -353,7 +357,6 @@ input[type=file] {
 
 table {
   border-collapse: collapse;
-  /* min-width: 800px !important; */
   width: 100%;
   background: var(--white);
 }
@@ -386,6 +389,7 @@ td {
   padding: 1rem;
   border-bottom: 4px solid var(--grey-50);
   vertical-align: middle;
+  text-transform: capitalize;
 }
 
 .mg-left {
