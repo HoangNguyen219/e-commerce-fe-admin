@@ -9,7 +9,7 @@ import {
   SET_LOADING,
   TOGGLE_SIDEBAR,
 } from '../actions';
-import axios from 'axios';
+import authFetch from '../utils/authFetch';
 import { ALERT_DANGER, ALERT_SUCCESS, auth_url } from '../utils/constants';
 
 const user = localStorage.getItem('user');
@@ -25,6 +25,16 @@ export const initialState = {
 const UserContext = React.createContext();
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  const logoutUser = async () => {
+    dispatch({ type: LOGOUT_USER });
+    try {
+      await myFetch.get(`${auth_url}/logout`);
+    } catch (error) {}
+    removeUserFromLocalStorage();
+  };
+
+  const myFetch = authFetch(logoutUser);
 
   const toggleSidebar = () => {
     dispatch({ type: TOGGLE_SIDEBAR });
@@ -56,7 +66,7 @@ export const UserProvider = ({ children }) => {
   const loginUser = async (currentUser) => {
     setLoading(true);
     try {
-      const response = await axios.post(`${auth_url}/login`, currentUser);
+      const response = await myFetch.post(`${auth_url}/login`, currentUser);
       const user = response.data.user;
       if (user.role === 'admin') {
         dispatch({
@@ -79,14 +89,6 @@ export const UserProvider = ({ children }) => {
       handleError(error);
     }
     setLoading(false);
-  };
-
-  const logoutUser = async () => {
-    dispatch({ type: LOGOUT_USER });
-    try {
-      await axios.get(`${auth_url}/logout`);
-    } catch (error) {}
-    removeUserFromLocalStorage();
   };
 
   const setError = (isError) => {

@@ -41,7 +41,6 @@ const products_reducer = (state, action) => {
       products,
       categories,
       companies,
-      ...state.filters,
       max_price: maxPrice,
       price: maxPrice,
     };
@@ -76,7 +75,7 @@ const products_reducer = (state, action) => {
       price: state.max_price,
       shipping: 'all',
       featured: 'all',
-      sort: 'price-lowest',
+      sort: 'latest',
     };
   }
 

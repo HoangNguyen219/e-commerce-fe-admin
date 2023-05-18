@@ -13,6 +13,9 @@ import Modal from './Modal';
 import FileInput from './FileInput';
 import CategoryList from './CategoryList';
 import AddButton from './AddButton';
+import Order from './Order';
+import SearchContainerOrder from './SearchContainerOrder';
+import OrderList from './OrdersList';
 
 export {
   Alert,
@@ -30,4 +33,7 @@ export {
   FileInput,
   CategoryList,
   AddButton,
+  Order,
+  SearchContainerOrder,
+  OrderList,
 };

@@ -12,10 +12,10 @@ import { capitalize } from './helpers';
 export const links = [
   { id: 1, text: 'statistics', path: '/', icon: <IoBarChartSharp /> },
   { id: 2, text: 'Products', path: 'products', icon: <FaProductHunt /> },
-  { id: 3, text: 'Reviews', path: 'reviews', icon: <MdRateReview /> },
   { id: 4, text: 'Categories', path: 'categories', icon: <MdCategory /> },
   { id: 5, text: 'Companies', path: 'companies', icon: <MdOutlineHomeWork /> },
   { id: 6, text: 'Orders', path: 'orders', icon: <IoCart /> },
+  { id: 3, text: 'Reviews', path: 'reviews', icon: <MdRateReview /> },
   { id: 7, text: 'Customers', path: 'customers', icon: <FaUser /> },
   { id: 8, text: 'Settings', path: 'settings', icon: <IoSettings /> },
 ];
@@ -57,6 +57,26 @@ export const booleanList = [
   { id: 'true', name: 'True' },
 ];
 
+export const processStatusList = [
+  { id: 'pending', name: 'Pending' },
+  { id: 'processing', name: 'Processing' },
+  { id: 'shipped', name: 'Shipped' },
+  { id: 'delivered', name: 'Delivered' },
+  { id: 'cancelled', name: 'Cancelled' },
+  { id: 'returned', name: 'Returned' },
+];
+
+export const paymentStatusList = [
+  { id: 'paid', name: 'Paid' },
+  { id: 'unpaid', name: 'Unpaid' },
+  { id: 'refunded', name: 'Refunded' },
+];
+
+export const paymentMethodList = [
+  { id: 'COD', name: 'COD' },
+  { id: 'PAYPAL', name: 'PAYPAL' },
+];
+
 export const colorsObj = colors.map((color) => {
   return { id: color, name: capitalize(color) };
 });
@@ -73,7 +93,15 @@ export const ALERT_SUCCESS = 'success';
 export const CATEGORIES = 'categories';
 export const COMPANY = 'companies';
 
-export const baseUrl = '/api/v1/';
-export const auth_url = '/api/v1/auth';
+export const products_url = 'products';
+export const categories_url = 'categories';
+export const companies_url = 'companies';
+export const auth_url = 'auth';
+export const reviews_url = 'reviews';
+export const address_url = 'addresses';
+export const orders_url = 'orders';
+export const users_url = 'users';
+
+export const baseUrl = '/api/v1';
 
 export const store_url = 'http://localhost:8000';

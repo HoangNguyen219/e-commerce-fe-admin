@@ -16,10 +16,15 @@ import {
 } from '../actions';
 import reducer from '../reducers/products_reducer';
 import React from 'react';
-import axios from 'axios';
-import { ALERT_SUCCESS, baseUrl } from '../utils/constants';
+import {
+  ALERT_SUCCESS,
+  categories_url,
+  companies_url,
+  products_url,
+} from '../utils/constants';
 import { useUserContext } from './user_context';
 import { useEffect } from 'react';
+import authFetch from '../utils/authFetch';
 
 const ProductsContext = React.createContext();
 const initialState = {
@@ -57,22 +62,7 @@ export const ProductsProvider = ({ children }) => {
     handleError,
     setError,
   } = useUserContext();
-
-  const authFetch = axios.create({
-    baseURL: baseUrl,
-  });
-
-  authFetch.interceptors.response.use(
-    (response) => {
-      return response;
-    },
-    (error) => {
-      if (error.response.status === 401) {
-        logoutUser();
-      }
-      return Promise.reject(error);
-    }
-  );
+  const myFetch = authFetch(logoutUser);
 
   const setTypePath = (typePath) => {
     dispatch({ type: CHANGE_TYPE_PATH, payload: { typePath } });
@@ -86,9 +76,9 @@ export const ProductsProvider = ({ children }) => {
         categoriesResponse,
         companiesResponse,
       ] = await Promise.all([
-        authFetch.get('/products'),
-        authFetch.get('/categories'),
-        authFetch.get('/companies'),
+        myFetch.get(products_url),
+        myFetch.get(categories_url),
+        myFetch.get(companies_url),
       ]);
       const products = productsResponse.data.products;
       const categories = categoriesResponse.data.categories;
@@ -117,10 +107,10 @@ export const ProductsProvider = ({ children }) => {
       sort,
     } = state;
 
-    let url = `/products?page=${page}&text=${text}&companyId=${companyId}&categoryId=${categoryId}&color=${color}&price=${price}&shipping=${shipping}&featured=${featured}&sort=${sort}`;
+    let url = `${products_url}?page=${page}&text=${text}&companyId=${companyId}&categoryId=${categoryId}&color=${color}&price=${price}&shipping=${shipping}&featured=${featured}&sort=${sort}`;
     setLoading(true);
     try {
-      const { data } = await authFetch.get(url);
+      const { data } = await myFetch.get(url);
       const { products, totalProducts, numOfPages } = data;
       dispatch({
         type: GET_PRODUCTS_SUCCESS,
@@ -143,7 +133,7 @@ export const ProductsProvider = ({ children }) => {
     console.log(url);
     setLoading(true);
     try {
-      const { data } = await authFetch.get(url);
+      const { data } = await myFetch.get(url);
       const dataCatCom = data[state.typePath];
       console.log(data);
       dispatch({
@@ -195,8 +185,8 @@ export const ProductsProvider = ({ children }) => {
         },
       };
 
-      const response = await authFetch.post(
-        `products/uploadImage`,
+      const response = await myFetch.post(
+        `${products_url}/uploadImage`,
         formData,
         config
       );
@@ -214,7 +204,7 @@ export const ProductsProvider = ({ children }) => {
   const editProduct = async (values) => {
     setLoading(true);
     try {
-      await authFetch.patch(`/products/${state.product.id}`, {
+      await myFetch.patch(`${products_url}/${state.product.id}`, {
         ...values,
         primaryImage: state.product.primaryImage,
         secondaryImages: state.product.secondaryImages,
@@ -233,7 +223,7 @@ export const ProductsProvider = ({ children }) => {
   const createProduct = async (values) => {
     setLoading(true);
     try {
-      await authFetch.post('/products', {
+      await myFetch.post(products_url, {
         ...values,
         primaryImage: state.product.primaryImage,
         secondaryImages: state.product.secondaryImages,
@@ -252,7 +242,7 @@ export const ProductsProvider = ({ children }) => {
   const deleteProduct = async (id) => {
     setLoading(true);
     try {
-      await authFetch.delete(`/products/${id}`);
+      await myFetch.delete(`${products_url}/${id}`);
       setError(false);
 
       getProducts();
@@ -266,7 +256,7 @@ export const ProductsProvider = ({ children }) => {
   const editCategory = async (values) => {
     setLoading(true);
     try {
-      await authFetch.patch(`/${state.typePath}/${state.category.id}`, {
+      await myFetch.patch(`/${state.typePath}/${state.category.id}`, {
         ...values,
       });
       displayAlert({
@@ -283,7 +273,7 @@ export const ProductsProvider = ({ children }) => {
   const createCategory = async (values) => {
     setLoading(true);
     try {
-      await authFetch.post(`/${state.typePath}`, {
+      await myFetch.post(`/${state.typePath}`, {
         ...values,
       });
       displayAlert({
@@ -300,7 +290,7 @@ export const ProductsProvider = ({ children }) => {
   const deleteCategory = async (id) => {
     setLoading(true);
     try {
-      await authFetch.delete(`/${state.typePath}/${id}`);
+      await myFetch.delete(`/${state.typePath}/${id}`);
       setError(false);
 
       getCategories();

@@ -28,3 +28,5 @@ export const CHANGE_TYPE_PATH = 'CHANGE_TYPE_PATH';
 
 export const UNSET_EDIT = 'UNSET_EDIT';
 export const SET_ERROR = 'SET_ERROR';
+
+export const GET_ORDERS_SUCCESS = 'GET_ORDERS_SUCCESS';

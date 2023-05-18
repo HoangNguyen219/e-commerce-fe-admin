@@ -9,6 +9,8 @@ import {
   AddProduct,
   CategoriesPage,
   AddCategory,
+  OrderPage,
+  OrdersPage,
 } from './pages';
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
           {/* <Route index element={<Stats />} /> */}
           <Route path="products" element={<ProductsPage />} />
           <Route path="add-product" element={<AddProduct />} />
+          <Route path="orders" element={<OrdersPage />} />
+
           <Route
             path="categories"
             element={<CategoriesPage typePath="categories" />}
