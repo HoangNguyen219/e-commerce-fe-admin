@@ -8,6 +8,7 @@ import {
   CategoriesPage,
   AddCategory,
   OrdersPage,
+  OrderDetailsPage,
 } from './dashboard';
 export {
   ErrorPage,
@@ -19,4 +20,5 @@ export {
   CategoriesPage,
   AddCategory,
   OrdersPage,
+  OrderDetailsPage,
 };

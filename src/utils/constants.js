@@ -62,7 +62,7 @@ export const processStatusList = [
   { id: 'processing', name: 'Processing' },
   { id: 'shipped', name: 'Shipped' },
   { id: 'delivered', name: 'Delivered' },
-  { id: 'cancelled', name: 'Cancelled' },
+  { id: 'canceled', name: 'Canceled' },
   { id: 'returned', name: 'Returned' },
 ];
 
@@ -73,8 +73,8 @@ export const paymentStatusList = [
 ];
 
 export const paymentMethodList = [
-  { id: 'COD', name: 'COD' },
-  { id: 'PAYPAL', name: 'PAYPAL' },
+  { id: 'cod', name: 'COD' },
+  { id: 'paypal', name: 'PAYPAL' },
 ];
 
 export const colorsObj = colors.map((color) => {

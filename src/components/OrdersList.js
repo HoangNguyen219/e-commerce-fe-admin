@@ -10,11 +10,26 @@ const OrderList = () => {
   const {
     getOrders,
     orders: { orders },
+    page,
+    sort,
+    total,
+    processStatus,
+    paymentMethod,
+    paymentStatus,
+    customer,
   } = useOrdersContext();
 
   useEffect(() => {
     getOrders();
-  }, []);
+  }, [
+    page,
+    sort,
+    total,
+    processStatus,
+    paymentMethod,
+    paymentStatus,
+    customer,
+  ]);
 
   if (isLoading) {
     return <Loading />;

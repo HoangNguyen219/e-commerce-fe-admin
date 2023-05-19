@@ -47,7 +47,7 @@ const SearchContainerOrder = () => {
     let name = e.target.name;
     let value = e.target.value;
 
-    if (name === 'price') {
+    if (name === 'total') {
       value = Number(value);
     }
     handleChange({ name, value });

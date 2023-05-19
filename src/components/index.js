@@ -16,6 +16,9 @@ import AddButton from './AddButton';
 import Order from './Order';
 import SearchContainerOrder from './SearchContainerOrder';
 import OrderList from './OrdersList';
+import CartColumns from './CartColumns';
+import CartTotal from './CartTotal';
+import OrderItem from './OrderItem';
 
 export {
   Alert,
@@ -36,4 +39,7 @@ export {
   Order,
   SearchContainerOrder,
   OrderList,
+  CartColumns,
+  CartTotal,
+  OrderItem,
 };

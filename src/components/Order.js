@@ -12,33 +12,36 @@ const Order = ({ orders }) => {
       <table>
         <thead>
           <tr>
-            <th></th>
-            <th>Processing Status</th>
             <th>Customer</th>
-            <th>Total</th>
+            <th>Processing Status</th>
             <th>Payment Method</th>
+            <th>Payment Status</th>
             <th>Order date</th>
+            <th>Total</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           {orders &&
-            orders.map((order, index) => {
+            orders.map((order) => {
               const {
                 id,
                 processStatus,
                 total,
                 paymentMethod,
+                paymentStatus,
                 createdAt,
                 userId,
               } = order;
               return (
                 <tr key={id}>
-                  <td>{index + 1}</td>
+                  <td className="email">{userId && userId.email}</td>
                   <td>
                     <span
                       className={
-                        processStatus === 'pending' || 'canceled' || 'returned'
+                        processStatus === 'pending' ||
+                        processStatus === 'canceled' ||
+                        processStatus === 'returned'
                           ? 'status red'
                           : 'status green'
                       }
@@ -46,13 +49,25 @@ const Order = ({ orders }) => {
                       {processStatus}{' '}
                     </span>
                   </td>
-                  <td className="email">{userId && userId.email}</td>
-                  <td>{formatPrice(total)}</td>
-                  <td>{paymentMethod}</td>
+
+                  <td className="method">{paymentMethod}</td>
+                  <td>
+                    <span
+                      className={
+                        paymentStatus === 'unpaid' ||
+                        paymentStatus === 'canceled'
+                          ? 'status red'
+                          : 'status green'
+                      }
+                    >
+                      {paymentStatus}{' '}
+                    </span>
+                  </td>
                   <td>{new Date(createdAt).toLocaleString()}</td>
+                  <td>{formatPrice(total)}</td>
                   <td>
                     <div className="actions">
-                      <Link to={`/me/orders/${id}`} className="btn btn-safe">
+                      <Link to={`/orders/${id}`} className="btn btn-safe">
                         View details
                       </Link>
                     </div>
@@ -84,6 +99,9 @@ const Wrapper = styled.section`
   }
   .email {
     text-transform: none;
+  }
+  .method {
+    text-transform: uppercase;
   }
 `;
 

@@ -30,3 +30,4 @@ export const UNSET_EDIT = 'UNSET_EDIT';
 export const SET_ERROR = 'SET_ERROR';
 
 export const GET_ORDERS_SUCCESS = 'GET_ORDERS_SUCCESS';
+export const GET_SINGLE_ORDER = 'GET_SINGLE_ORDER';

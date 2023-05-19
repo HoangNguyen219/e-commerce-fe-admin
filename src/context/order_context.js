@@ -4,6 +4,7 @@ import {
   CLEAR_FILTERS,
   GET_DATA_SUCCESS,
   GET_ORDERS_SUCCESS,
+  GET_SINGLE_ORDER,
   HANDLE_CHANGE,
 } from '../actions';
 import reducer from '../reducers/orders_reducer';
@@ -21,7 +22,7 @@ import authFetch from '../utils/authFetch';
 const OrdersContext = React.createContext();
 const initialState = {
   page: 1,
-  sort: 'lastest',
+  sort: 'latest',
   min_total: 0,
   max_total: 0,
   total: 0,
@@ -29,6 +30,7 @@ const initialState = {
   paymentMethod: 'all',
   paymentStatus: 'all',
   customer: '',
+  order: {},
   orders: {
     orders: [],
     totalOrders: 0,
@@ -58,9 +60,17 @@ export const OrdersProvider = ({ children }) => {
   const myFetch = authFetch(logoutUser);
 
   const getOrders = async () => {
-    const { page, sort } = state;
+    const {
+      page,
+      sort,
+      total,
+      processStatus,
+      paymentMethod,
+      paymentStatus,
+      customer,
+    } = state;
 
-    let url = `${orders_url}?page=${page}&sort=${sort}`;
+    let url = `${orders_url}?page=${page}&total=${total}&processStatus=${processStatus}&paymentMethod=${paymentMethod}&paymentStatus=${paymentStatus}&customer=${customer}&sort=${sort}`;
     setLoading(true);
     try {
       const { data } = await myFetch.get(url);
@@ -122,6 +132,21 @@ export const OrdersProvider = ({ children }) => {
     dispatch({ type: CHANGE_PAGE, payload: { page } });
   };
 
+  const getSingleOrder = async (id) => {
+    setLoading(true);
+    try {
+      const response = await myFetch.get(`${orders_url}/${id}`);
+      dispatch({
+        type: GET_SINGLE_ORDER,
+        payload: { order: response.data.order },
+      });
+      setError(false);
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
   const editOrder = async (values) => {
     setLoading(true);
     try {
@@ -148,6 +173,7 @@ export const OrdersProvider = ({ children }) => {
         handleChange,
         changePage,
         editOrder,
+        getSingleOrder,
       }}
     >
       {children}

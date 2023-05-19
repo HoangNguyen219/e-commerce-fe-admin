@@ -4,6 +4,7 @@ import {
   HANDLE_CHANGE,
   CHANGE_PAGE,
   GET_ORDERS_SUCCESS,
+  GET_SINGLE_ORDER,
 } from '../actions';
 
 const orders_reducer = (state, action) => {
@@ -57,6 +58,14 @@ const orders_reducer = (state, action) => {
 
   if (action.type === CHANGE_PAGE) {
     return { ...state, page: action.payload.page };
+  }
+
+  if (action.type === GET_SINGLE_ORDER) {
+    const { order } = action.payload;
+    return {
+      ...state,
+      order,
+    };
   }
 
   throw new Error(`No matching "${action.type}" - action type`);

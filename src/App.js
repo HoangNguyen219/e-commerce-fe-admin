@@ -11,6 +11,7 @@ import {
   AddCategory,
   OrderPage,
   OrdersPage,
+  OrderDetailsPage,
 } from './pages';
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="products" element={<ProductsPage />} />
           <Route path="add-product" element={<AddProduct />} />
           <Route path="orders" element={<OrdersPage />} />
+          <Route path="orders/:id" element={<OrderDetailsPage />} />
 
           <Route
             path="categories"
