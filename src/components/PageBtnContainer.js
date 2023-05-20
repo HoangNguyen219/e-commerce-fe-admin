@@ -1,11 +1,8 @@
 import React from 'react';
-import { useProductsContext } from '../context/product_context';
 import { HiChevronDoubleLeft, HiChevronDoubleRight } from 'react-icons/hi';
 import Wrapper from '../assets/wrappers/PageBtnContainer';
 
-const PageBtnContainer = () => {
-  const { numOfPages, page, changePage } = useProductsContext();
-
+const PageBtnContainer = ({ numOfPages, page, changePage }) => {
   const pages = Array.from({ length: numOfPages }, (_, index) => {
     return index + 1;
   });

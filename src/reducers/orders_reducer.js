@@ -5,6 +5,8 @@ import {
   CHANGE_PAGE,
   GET_ORDERS_SUCCESS,
   GET_SINGLE_ORDER,
+  GET_REVIEWS_SUCCESS,
+  GET_CUSTOMERS_SUCCESS,
 } from '../actions';
 
 const orders_reducer = (state, action) => {
@@ -23,12 +25,37 @@ const orders_reducer = (state, action) => {
   }
 
   if (action.type === GET_ORDERS_SUCCESS) {
-    const { orders, totalProducts, numOfPages } = action.payload;
+    const { orders, totalOrders, numOfPages } = action.payload;
     return {
       ...state,
       orders: {
         orders,
-        totalProducts,
+        totalOrders,
+        numOfPages,
+      },
+    };
+  }
+
+  if (action.type === GET_REVIEWS_SUCCESS) {
+    const { reviews, totalReviews, numOfPages } = action.payload;
+    return {
+      ...state,
+      reviews: {
+        reviews,
+        totalReviews,
+        numOfPages,
+      },
+    };
+  }
+
+  if (action.type === GET_CUSTOMERS_SUCCESS) {
+    const { users, totalCustomers, numOfPages } = action.payload;
+    console.log(users);
+    return {
+      ...state,
+      customers: {
+        customers: users,
+        totalCustomers,
         numOfPages,
       },
     };
@@ -41,6 +68,8 @@ const orders_reducer = (state, action) => {
       processStatus: 'all',
       paymentMethod: 'all',
       paymentStatus: 'all',
+      product: '',
+      rating: 'all',
       total: state.max_total,
       sort: 'latest',
     };

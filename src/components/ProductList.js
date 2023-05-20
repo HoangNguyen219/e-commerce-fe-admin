@@ -20,6 +20,7 @@ const ProductList = () => {
     page,
     numOfPages,
     totalProducts,
+    changePage,
   } = useProductsContext();
 
   const { isLoading, isError } = useUserContext();
@@ -64,7 +65,13 @@ const ProductList = () => {
         </Link>
       </h5>
       <ListView products={products} />
-      {numOfPages > 1 && <PageBtnContainer />}
+      {numOfPages > 1 && (
+        <PageBtnContainer
+          numOfPages={numOfPages}
+          page={page}
+          changePage={changePage}
+        />
+      )}
     </>
   );
 };

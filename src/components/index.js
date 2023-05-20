@@ -19,7 +19,11 @@ import OrderList from './OrdersList';
 import CartColumns from './CartColumns';
 import CartTotal from './CartTotal';
 import OrderItem from './OrderItem';
-
+import ReviewList from './ReviewList';
+import SearchContainerReview from './SearchContainerReview';
+import Stars from './Stars';
+import SearchContainerCustomer from './SearchContainerCustomer';
+import CustomerList from './CustomerList';
 export {
   Alert,
   FormRow,
@@ -42,4 +46,9 @@ export {
   CartColumns,
   CartTotal,
   OrderItem,
+  ReviewList,
+  SearchContainerReview,
+  Stars,
+  SearchContainerCustomer,
+  CustomerList,
 };

@@ -2,35 +2,25 @@ import React, { useEffect } from 'react';
 import { useUserContext } from '../context/user_context';
 import { useOrdersContext } from '../context/order_context';
 import Loading from './Loading';
-import Order from './Order';
+import Review from './Review';
 import PageBtnContainer from './PageBtnContainer';
 
-const OrderList = () => {
+const ReviewList = () => {
   const { isLoading, isError } = useUserContext();
   const {
-    getOrders,
-    orders: { orders, totalOrders, numOfPages },
+    getReviews,
+    reviews: { reviews, totalReviews, numOfPages },
     page,
     sort,
-    total,
-    processStatus,
-    paymentMethod,
-    paymentStatus,
+    product,
+    rating,
     customer,
     changePage,
   } = useOrdersContext();
 
   useEffect(() => {
-    getOrders();
-  }, [
-    page,
-    sort,
-    total,
-    processStatus,
-    paymentMethod,
-    paymentStatus,
-    customer,
-  ]);
+    getReviews();
+  }, [page, sort, customer, product, rating]);
 
   if (isLoading) {
     return <Loading />;
@@ -40,16 +30,16 @@ const OrderList = () => {
     return <h4 style={{ textTransform: 'none' }}>There was an error...</h4>;
   }
 
-  if (orders.length < 1) {
-    return <h4 style={{ textTransform: 'none' }}>No orders to display...</h4>;
+  if (reviews.length < 1) {
+    return <h4 style={{ textTransform: 'none' }}>No reviews to display...</h4>;
   }
   return (
     <>
       <h5 className="inline">
-        {totalOrders} order
-        {totalOrders > 1 && 's'} found
+        {totalReviews} review
+        {totalReviews > 1 && 's'} found
       </h5>
-      <Order orders={orders} />
+      <Review reviews={reviews} />
       {numOfPages > 1 && (
         <PageBtnContainer
           numOfPages={numOfPages}
@@ -61,4 +51,4 @@ const OrderList = () => {
   );
 };
 
-export default OrderList;
+export default ReviewList;

@@ -9,6 +9,8 @@ import {
   AddCategory,
   OrdersPage,
   OrderDetailsPage,
+  ReviewsPage,
+  CustomersPage,
 } from './dashboard';
 export {
   ErrorPage,
@@ -21,4 +23,6 @@ export {
   AddCategory,
   OrdersPage,
   OrderDetailsPage,
+  ReviewsPage,
+  CustomersPage,
 };

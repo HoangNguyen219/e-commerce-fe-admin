@@ -3,9 +3,9 @@ import { ProductList, SearchContainer } from '../../components';
 import { useProductsContext } from '../../context/product_context';
 
 const ProductsPage = () => {
-  const { handleChange, unsetEdit } = useProductsContext();
+  const { clearFilters, unsetEdit } = useProductsContext();
   useEffect(() => {
-    handleChange({ name: 'text', value: '' });
+    clearFilters();
     unsetEdit();
   }, []);
   return (

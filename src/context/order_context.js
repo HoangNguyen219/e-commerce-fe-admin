@@ -2,8 +2,10 @@ import { useContext, useReducer } from 'react';
 import {
   CHANGE_PAGE,
   CLEAR_FILTERS,
+  GET_CUSTOMERS_SUCCESS,
   GET_DATA_SUCCESS,
   GET_ORDERS_SUCCESS,
+  GET_REVIEWS_SUCCESS,
   GET_SINGLE_ORDER,
   HANDLE_CHANGE,
 } from '../actions';
@@ -30,6 +32,8 @@ const initialState = {
   paymentMethod: 'all',
   paymentStatus: 'all',
   customer: '',
+  product: '',
+  rating: 'all',
   order: {},
   orders: {
     orders: [],
@@ -90,6 +94,53 @@ export const OrdersProvider = ({ children }) => {
     setLoading(false);
   };
 
+  const getReviews = async () => {
+    const { page, sort, customer, product, rating } = state;
+
+    let url = `${reviews_url}?page=${page}&product=${product}&rating=${rating}&customer=${customer}&sort=${sort}`;
+    setLoading(true);
+    try {
+      const { data } = await myFetch.get(url);
+      const { reviews, totalReviews, numOfPages } = data;
+      dispatch({
+        type: GET_REVIEWS_SUCCESS,
+        payload: {
+          reviews,
+          totalReviews,
+          numOfPages,
+        },
+      });
+      setError(false);
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
+  const getCustomers = async () => {
+    const { page, sort, customer } = state;
+
+    let url = `${users_url}?page=${page}&customer=${customer}&sort=${sort}`;
+    setLoading(true);
+    try {
+      const { data } = await myFetch.get(url);
+      const { users, totalCustomers, numOfPages } = data;
+      console.log(users);
+      dispatch({
+        type: GET_CUSTOMERS_SUCCESS,
+        payload: {
+          users,
+          totalCustomers,
+          numOfPages,
+        },
+      });
+      setError(false);
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -104,7 +155,7 @@ export const OrdersProvider = ({ children }) => {
       ]);
       const orders = ordersResponse.data.orders;
       const reviews = reviewsResponse.data.reviews;
-      const customers = customersResponse.data.customers;
+      const customers = customersResponse.data.users;
       dispatch({
         type: GET_DATA_SUCCESS,
         payload: { reviews, orders, customers },
@@ -174,6 +225,8 @@ export const OrdersProvider = ({ children }) => {
         changePage,
         editOrder,
         getSingleOrder,
+        getReviews,
+        getCustomers,
       }}
     >
       {children}

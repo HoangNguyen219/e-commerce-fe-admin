@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
-import { OrderList, SearchContainerOrder } from '../../components';
+import { ReviewList, SearchContainerReview } from '../../components';
 import { useOrdersContext } from '../../context/order_context';
 
-const OrdersPage = () => {
+const ReviewsPage = () => {
   const { clearFilters } = useOrdersContext();
   useEffect(() => {
     clearFilters();
   }, []);
   return (
     <>
-      <SearchContainerOrder />
-      <OrderList />
+      <SearchContainerReview />
+      <ReviewList />
     </>
   );
 };
 
-export default OrdersPage;
+export default ReviewsPage;

@@ -5,7 +5,7 @@ import Wrapper from '../assets/wrappers/SearchContainer';
 import { useState, useMemo } from 'react';
 import { useEffect } from 'react';
 import {
-  sorts,
+  orderSorts,
   processStatusList,
   paymentMethodList,
   paymentStatusList,
@@ -133,7 +133,7 @@ const SearchContainerOrder = () => {
             name="sort"
             value={sort}
             handleChange={handleSearch}
-            list={sorts}
+            list={orderSorts}
           />
           {/* total */}
           <div className="form-row">

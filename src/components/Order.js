@@ -1,12 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useUserContext } from '../context/user_context';
 import { formatPrice } from '../utils/helpers';
 import styled from 'styled-components';
 
 const Order = ({ orders }) => {
-  const {} = useUserContext();
-
   return (
     <Wrapper>
       <table>

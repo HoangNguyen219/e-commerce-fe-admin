@@ -45,16 +45,51 @@ export const sorts = [
   { id: 'rating-highest', name: 'Rating (Highest)' },
 ];
 
+export const orderSorts = [
+  { id: 'latest', name: 'Latest' },
+  { id: 'oldest', name: 'Oldest' },
+  { id: 'total-lowest', name: 'Total (Lowest)' },
+  { id: 'total-highest', name: 'Total (Highest)' },
+];
+
+export const reviewSorts = [
+  { id: 'latest', name: 'Latest' },
+  { id: 'oldest', name: 'Oldest' },
+  { id: 'rating-lowest', name: 'Rating (Lowest)' },
+  { id: 'rating-highest', name: 'Rating (Highest)' },
+];
+
+export const customerSorts = [
+  { id: 'latest', name: 'Latest' },
+  { id: 'oldest', name: 'Oldest' },
+  { id: 'a-z', name: 'Name (A-Z)' },
+  { id: 'z-a', name: 'Name (Z-A)' },
+  { id: 'order-lowest', name: 'Order (Lowest)' },
+  { id: 'order-highest', name: 'Order (Highest)' },
+  { id: 'review-lowest', name: 'Review (Lowest)' },
+  { id: 'review-highest', name: 'Review (Highest)' },
+];
+
 export const categorySorts = [
   { id: 'latest', name: 'Latest' },
   { id: 'oldest', name: 'Oldest' },
   { id: 'a-z', name: 'Name (A-Z)' },
   { id: 'z-a', name: 'Name (Z-A)' },
+  { id: 'product-lowest', name: 'Product (Lowest)' },
+  { id: 'product-highest', name: 'Product (Highest)' },
 ];
 
 export const booleanList = [
   { id: 'false', name: 'False' },
   { id: 'true', name: 'True' },
+];
+
+export const ratingList = [
+  { id: '1', name: '1 star' },
+  { id: '2', name: '2 stars' },
+  { id: '3', name: '3 stars' },
+  { id: '4', name: '4 stars' },
+  { id: '5', name: '5 stars' },
 ];
 
 export const processStatusList = [

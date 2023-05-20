@@ -17,7 +17,7 @@ const CategoriesPage = ({ typePath }) => {
 
   useEffect(() => {
     setTypePath(typePath);
-    handleChange({ name: 'text', value: '' });
+    clearFilters();
   }, [typePath]);
 
   const [localSearch, setLocalSearch] = useState(text);
