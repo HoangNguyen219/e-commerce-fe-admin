@@ -97,6 +97,7 @@ export const processStatusList = [
   { id: 'processing', name: 'Processing' },
   { id: 'shipped', name: 'Shipped' },
   { id: 'delivered', name: 'Delivered' },
+  { id: 'completed', name: 'Completed' },
   { id: 'canceled', name: 'Canceled' },
   { id: 'returned', name: 'Returned' },
 ];

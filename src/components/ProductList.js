@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useProductsContext } from '../context/product_context';
-import ListView from './ListView';
+import Product from './Product';
 import Loading from './Loading';
 import PageBtnContainer from './PageBtnContainer';
 import { useUserContext } from '../context/user_context';
@@ -64,7 +64,7 @@ const ProductList = () => {
           Add Product
         </Link>
       </h5>
-      <ListView products={products} />
+      <Product products={products} />
       {numOfPages > 1 && (
         <PageBtnContainer
           numOfPages={numOfPages}

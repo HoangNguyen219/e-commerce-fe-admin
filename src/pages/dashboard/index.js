@@ -7,6 +7,7 @@ import OrdersPage from './OrdersPage';
 import OrderDetailsPage from './OrderDetailsPage';
 import ReviewsPage from './ReviewsPage';
 import CustomersPage from './CustomersPage';
+import StatisticsPage from './StatisticsPage';
 
 export {
   SharedLayout,
@@ -18,4 +19,5 @@ export {
   OrderDetailsPage,
   ReviewsPage,
   CustomersPage,
+  StatisticsPage,
 };

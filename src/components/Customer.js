@@ -42,9 +42,6 @@ const Customer = ({ customers }) => {
 };
 
 const Wrapper = styled.section`
-  .btn {
-    font-size: 0.7rem;
-  }
   .email {
     text-transform: none;
   }

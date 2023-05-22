@@ -196,7 +196,6 @@ export const ProductsProvider = ({ children }) => {
       });
       setError(false);
     } catch (error) {
-      if (error.response.status === 401) return;
       handleError(error);
     }
   };
@@ -247,7 +246,6 @@ export const ProductsProvider = ({ children }) => {
 
       getProducts();
     } catch (error) {
-      if (error.response.status === 401) return;
       handleError(error);
     }
     setLoading(false);
@@ -295,7 +293,6 @@ export const ProductsProvider = ({ children }) => {
 
       getCategories();
     } catch (error) {
-      if (error.response.status === 401) return;
       handleError(error);
     }
     setLoading(false);

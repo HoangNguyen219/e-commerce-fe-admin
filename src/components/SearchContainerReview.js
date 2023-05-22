@@ -5,7 +5,7 @@ import Wrapper from '../assets/wrappers/SearchContainer';
 import { useState, useMemo } from 'react';
 import { useEffect } from 'react';
 import { reviewSorts, ratingList } from '../utils/constants';
-import { formatPrice, addAll } from '../utils/helpers';
+import { addAll } from '../utils/helpers';
 import { useUserContext } from '../context/user_context';
 
 const SearchContainerReview = () => {

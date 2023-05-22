@@ -3,14 +3,22 @@ import reducer from '../reducers/user_reducer';
 import {
   CLEAR_ALERT,
   DISPLAY_ALERT,
+  HANDLE_CHANGE,
   LOGIN_USER_SUCCESS,
   LOGOUT_USER,
   SET_ERROR,
   SET_LOADING,
+  SHOW_STATS_SUCCESS,
   TOGGLE_SIDEBAR,
 } from '../actions';
 import authFetch from '../utils/authFetch';
-import { ALERT_DANGER, ALERT_SUCCESS, auth_url } from '../utils/constants';
+import {
+  ALERT_DANGER,
+  ALERT_SUCCESS,
+  auth_url,
+  orders_url,
+} from '../utils/constants';
+import { dateToString } from '../utils/helpers';
 
 const user = localStorage.getItem('user');
 
@@ -20,6 +28,11 @@ export const initialState = {
   alert: { showAlert: false, alertType: '', alertText: '' },
   user: user ? JSON.parse(user) : null,
   isError: false,
+  stats: {},
+  popularProducts: [],
+  revenue: [],
+  startDateStr: dateToString(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)),
+  endDateStr: dateToString(new Date()),
 };
 
 const UserContext = React.createContext();
@@ -96,12 +109,40 @@ export const UserProvider = ({ children }) => {
   };
 
   const handleError = (error) => {
-    const msg = error.response ? error.response.data.msg : '';
+    if (error.response.status === 401) return;
+    const msg = error.response
+      ? error.response.data.msg
+      : 'Some thing went wrong, please try again';
     displayAlert({
       alertType: ALERT_DANGER,
       alertText: msg,
     });
     setError(true);
+  };
+
+  const showStats = async () => {
+    setLoading(true);
+    try {
+      const { data } = await myFetch(
+        `${orders_url}/stats?startDateStr=${state.startDateStr}&endDateStr=${state.endDateStr}`
+      );
+      dispatch({
+        type: SHOW_STATS_SUCCESS,
+        payload: {
+          stats: data.stats,
+          revenue: data.revenue,
+          popularProducts: data.popularProducts,
+        },
+      });
+      setError(false);
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
+  const handleChange = ({ name, value }) => {
+    dispatch({ type: HANDLE_CHANGE, payload: { name, value } });
   };
 
   return (
@@ -115,6 +156,8 @@ export const UserProvider = ({ children }) => {
         setLoading,
         handleError,
         setError,
+        showStats,
+        handleChange,
       }}
     >
       {children}

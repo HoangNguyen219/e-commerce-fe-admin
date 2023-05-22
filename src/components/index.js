@@ -24,6 +24,10 @@ import SearchContainerReview from './SearchContainerReview';
 import Stars from './Stars';
 import SearchContainerCustomer from './SearchContainerCustomer';
 import CustomerList from './CustomerList';
+import StatsContainer from './StatsContainer';
+import ChartsContainer from './ChartsContainer';
+import SearchContainerStats from './SearchContainerStats';
+
 export {
   Alert,
   FormRow,
@@ -51,4 +55,7 @@ export {
   Stars,
   SearchContainerCustomer,
   CustomerList,
+  StatsContainer,
+  ChartsContainer,
+  SearchContainerStats,
 };

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Wrapper from '../assets/wrappers/ListView';
 import { useProductsContext } from '../context/product_context';
 import Modal from './Modal';
 import { CATEGORIES } from '../utils/constants';
@@ -17,7 +16,7 @@ const Category = ({ categories }) => {
   } = useProductsContext();
 
   return (
-    <Wrapper>
+    <>
       {showModal && (
         <Modal
           handleCloseModal={handleCloseModal}
@@ -69,7 +68,7 @@ const Category = ({ categories }) => {
           })}
         </tbody>
       </table>
-    </Wrapper>
+    </>
   );
 };
 

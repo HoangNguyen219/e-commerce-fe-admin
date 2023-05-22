@@ -1,10 +1,12 @@
 import {
   CLEAR_ALERT,
   DISPLAY_ALERT,
+  HANDLE_CHANGE,
   LOGIN_USER_SUCCESS,
   LOGOUT_USER,
   SET_ERROR,
   SET_LOADING,
+  SHOW_STATS_SUCCESS,
   TOGGLE_SIDEBAR,
 } from '../actions';
 import { initialState } from '../context/user_context';
@@ -64,6 +66,24 @@ const user_reducer = (state, action) => {
     return {
       ...initialState,
       user: null,
+    };
+  }
+
+  if (action.type === SHOW_STATS_SUCCESS) {
+    const { stats, popularProducts, revenue } = action.payload;
+    return {
+      ...state,
+      stats,
+      popularProducts,
+      revenue,
+    };
+  }
+
+  if (action.type === HANDLE_CHANGE) {
+    let { name, value } = action.payload;
+    return {
+      ...state,
+      [name]: value,
     };
   }
 

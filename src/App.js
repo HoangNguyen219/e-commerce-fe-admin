@@ -14,6 +14,7 @@ import {
   ReviewsPage,
   CustomersPage,
 } from './pages';
+import { StatisticsPage } from './pages/dashboard';
 function App() {
   return (
     <Router>
@@ -26,7 +27,7 @@ function App() {
             </ProtectedRoute>
           }
         >
-          {/* <Route index element={<Stats />} /> */}
+          <Route index element={<StatisticsPage />} />
           <Route path="products" element={<ProductsPage />} />
           <Route path="add-product" element={<AddProduct />} />
           <Route path="orders" element={<OrdersPage />} />

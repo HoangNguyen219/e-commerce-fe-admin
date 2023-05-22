@@ -4,6 +4,7 @@ import { Logo, FormRow, Alert, Loading } from '../components';
 import Wrapper from '../assets/wrappers/LoginPage';
 import { useUserContext } from '../context/user_context';
 import { useNavigate } from 'react-router-dom';
+import { ALERT_DANGER } from '../utils/constants';
 
 const initialState = {
   email: '',
@@ -22,7 +23,10 @@ const LoginPage = () => {
     e.preventDefault();
     const { email, password } = values;
     if (!email || !password) {
-      displayAlert('Please provide all values');
+      displayAlert({
+        alertText: 'Please provide all values',
+        alertType: ALERT_DANGER,
+      });
       return;
     }
     const currentUser = { email, password };
