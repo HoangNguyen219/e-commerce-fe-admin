@@ -27,6 +27,7 @@ import CustomerList from './CustomerList';
 import StatsContainer from './StatsContainer';
 import ChartsContainer from './ChartsContainer';
 import SearchContainerStats from './SearchContainerStats';
+import Param from './Param';
 
 export {
   Alert,
@@ -58,4 +59,5 @@ export {
   StatsContainer,
   ChartsContainer,
   SearchContainerStats,
+  Param,
 };

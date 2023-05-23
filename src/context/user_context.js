@@ -3,9 +3,11 @@ import reducer from '../reducers/user_reducer';
 import {
   CLEAR_ALERT,
   DISPLAY_ALERT,
+  GET_PARAMS_SUCCESS,
   HANDLE_CHANGE,
   LOGIN_USER_SUCCESS,
   LOGOUT_USER,
+  SET_EDIT_PARAM,
   SET_ERROR,
   SET_LOADING,
   SHOW_STATS_SUCCESS,
@@ -16,6 +18,7 @@ import {
   ALERT_DANGER,
   ALERT_SUCCESS,
   auth_url,
+  config_url,
   orders_url,
 } from '../utils/constants';
 import { dateToString } from '../utils/helpers';
@@ -33,6 +36,9 @@ export const initialState = {
   revenue: [],
   startDateStr: dateToString(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)),
   endDateStr: dateToString(new Date()),
+  params: [],
+  param: {},
+  isEditing: false,
 };
 
 const UserContext = React.createContext();
@@ -141,6 +147,74 @@ export const UserProvider = ({ children }) => {
     setLoading(false);
   };
 
+  const getParams = async () => {
+    setLoading(true);
+    try {
+      const { data } = await myFetch(`${config_url}`);
+      dispatch({
+        type: GET_PARAMS_SUCCESS,
+        payload: {
+          params: data.configs,
+        },
+      });
+      setError(false);
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
+  const editParam = async (values) => {
+    setLoading(true);
+    try {
+      await myFetch.patch(`/${config_url}/${state.param.id}`, {
+        ...values,
+      });
+      displayAlert({
+        alertType: ALERT_SUCCESS,
+        alertText: 'Item updated! Redirect...',
+      });
+      setError(false);
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
+  const createParam = async (values) => {
+    setLoading(true);
+    try {
+      await myFetch.post(config_url, {
+        ...values,
+      });
+      displayAlert({
+        alertType: ALERT_SUCCESS,
+        alertText: 'Item added! Redirect...',
+      });
+      setError(false);
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
+  const deleteParam = async (id) => {
+    setLoading(true);
+    try {
+      await myFetch.delete(`/${config_url}/${id}`);
+      setError(false);
+
+      getParams();
+    } catch (error) {
+      handleError(error);
+    }
+    setLoading(false);
+  };
+
+  const setEditParam = (id) => {
+    dispatch({ type: SET_EDIT_PARAM, payload: { id } });
+  };
+
   const handleChange = ({ name, value }) => {
     dispatch({ type: HANDLE_CHANGE, payload: { name, value } });
   };
@@ -158,6 +232,11 @@ export const UserProvider = ({ children }) => {
         setError,
         showStats,
         handleChange,
+        getParams,
+        editParam,
+        createParam,
+        deleteParam,
+        setEditParam,
       }}
     >
       {children}

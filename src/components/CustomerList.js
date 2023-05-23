@@ -36,7 +36,7 @@ const CustomerList = () => {
   return (
     <>
       <h5 className="inline">
-        {totalCustomers} review
+        {totalCustomers} customer
         {totalCustomers > 1 && 's'} found
       </h5>
       <Customer customers={customers} />

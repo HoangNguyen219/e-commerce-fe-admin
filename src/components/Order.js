@@ -79,18 +79,6 @@ const Order = ({ orders }) => {
 };
 
 const Wrapper = styled.section`
-  .status {
-    font-size: 0.8rem;
-    padding: 2px;
-  }
-  .green {
-    border: solid 1px green;
-    color: green;
-  }
-  .red {
-    border: solid 1px red;
-    color: red;
-  }
   .btn {
     font-size: 0.7rem;
   }

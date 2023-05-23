@@ -13,8 +13,10 @@ import {
   OrderDetailsPage,
   ReviewsPage,
   CustomersPage,
+  SettingPage,
+  StatisticsPage,
+  AddParam,
 } from './pages';
-import { StatisticsPage } from './pages/dashboard';
 function App() {
   return (
     <Router>
@@ -34,6 +36,8 @@ function App() {
           <Route path="orders/:id" element={<OrderDetailsPage />} />
           <Route path="reviews" element={<ReviewsPage />} />
           <Route path="customers" element={<CustomersPage />} />
+          <Route path="settings" element={<SettingPage />} />
+          <Route path="add-param" element={<AddParam />} />
 
           <Route
             path="categories"

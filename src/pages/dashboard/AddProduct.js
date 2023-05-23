@@ -67,7 +67,7 @@ const AddProduct = () => {
       });
       return;
     }
-    if (toInt(price) === -1) {
+    if (toInt(price) === 'NaN') {
       displayAlert({
         alertText: 'Please provide a valid number',
         alertType: ALERT_DANGER,
@@ -75,7 +75,7 @@ const AddProduct = () => {
       return;
     }
     colorStocks.forEach((cs) => {
-      if (toInt(cs.stock) === -1) {
+      if (toInt(cs.stock) === 'NaN') {
         displayAlert({
           alertText: 'Please provide a valid number',
           alertType: ALERT_DANGER,

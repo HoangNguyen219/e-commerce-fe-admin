@@ -467,3 +467,20 @@ hr {
   margin-right: 0.5rem;
   font-size: 0.7rem;
 }
+
+.status {
+  font-size: 0.8rem;
+  padding: 2px;
+}
+.green {
+  border: solid 1px green;
+  color: green;
+}
+.red {
+  border: solid 1px red;
+  color: red;
+}
+
+.noneTransform {
+  text-transform: none;
+}

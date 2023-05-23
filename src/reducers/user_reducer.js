@@ -1,9 +1,11 @@
 import {
   CLEAR_ALERT,
   DISPLAY_ALERT,
+  GET_PARAMS_SUCCESS,
   HANDLE_CHANGE,
   LOGIN_USER_SUCCESS,
   LOGOUT_USER,
+  SET_EDIT_PARAM,
   SET_ERROR,
   SET_LOADING,
   SHOW_STATS_SUCCESS,
@@ -76,6 +78,23 @@ const user_reducer = (state, action) => {
       stats,
       popularProducts,
       revenue,
+    };
+  }
+
+  if (action.type === GET_PARAMS_SUCCESS) {
+    const { params } = action.payload;
+    return {
+      ...state,
+      params,
+    };
+  }
+
+  if (action.type === SET_EDIT_PARAM) {
+    const param = state.params.find((param) => param.id === action.payload.id);
+    return {
+      ...state,
+      isEditing: true,
+      param,
     };
   }
 

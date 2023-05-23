@@ -49,12 +49,11 @@ const orders_reducer = (state, action) => {
   }
 
   if (action.type === GET_CUSTOMERS_SUCCESS) {
-    const { users, totalCustomers, numOfPages } = action.payload;
-    console.log(users);
+    const { customers, totalCustomers, numOfPages } = action.payload;
     return {
       ...state,
       customers: {
-        customers: users,
+        customers,
         totalCustomers,
         numOfPages,
       },

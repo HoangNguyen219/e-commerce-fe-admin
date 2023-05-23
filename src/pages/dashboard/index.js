@@ -8,6 +8,8 @@ import OrderDetailsPage from './OrderDetailsPage';
 import ReviewsPage from './ReviewsPage';
 import CustomersPage from './CustomersPage';
 import StatisticsPage from './StatisticsPage';
+import SettingPage from './SettingPage';
+import AddParam from './AddParam';
 
 export {
   SharedLayout,
@@ -20,4 +22,6 @@ export {
   ReviewsPage,
   CustomersPage,
   StatisticsPage,
+  SettingPage,
+  AddParam,
 };

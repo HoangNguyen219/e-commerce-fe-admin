@@ -138,18 +138,6 @@ const Wrapper = styled.section`
       column-gap: 3rem;
     }
   }
-  .status {
-    font-size: 0.8rem;
-    padding: 1px;
-  }
-  .green {
-    border: solid 1px green;
-    color: green;
-  }
-  .red {
-    border: solid 1px red;
-    color: red;
-  }
   .info {
     margin-top: 1.25rem;
   }

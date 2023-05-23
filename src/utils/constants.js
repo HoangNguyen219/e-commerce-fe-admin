@@ -84,6 +84,12 @@ export const booleanList = [
   { id: 'true', name: 'True' },
 ];
 
+export const dataTypeList = [
+  { id: 'Number', name: 'Number' },
+  { id: 'String', name: 'String' },
+  { id: 'Boolean', name: 'Boolean' },
+];
+
 export const ratingList = [
   { id: '1', name: '1 star' },
   { id: '2', name: '2 stars' },
@@ -137,6 +143,7 @@ export const reviews_url = 'reviews';
 export const address_url = 'addresses';
 export const orders_url = 'orders';
 export const users_url = 'users';
+export const config_url = 'config';
 
 export const baseUrl = '/api/v1';
 

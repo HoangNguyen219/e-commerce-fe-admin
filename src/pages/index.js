@@ -11,6 +11,9 @@ import {
   OrderDetailsPage,
   ReviewsPage,
   CustomersPage,
+  SettingPage,
+  AddParam,
+  StatisticsPage,
 } from './dashboard';
 export {
   ErrorPage,
@@ -25,4 +28,7 @@ export {
   OrderDetailsPage,
   ReviewsPage,
   CustomersPage,
+  SettingPage,
+  AddParam,
+  StatisticsPage,
 };

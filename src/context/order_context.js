@@ -42,12 +42,12 @@ const initialState = {
   },
   reviews: {
     reviews: [],
-    totalOrders: 0,
+    totalReviews: 0,
     numOfPages: 1,
   },
   customers: {
     customers: [],
-    totalOrders: 0,
+    totalCustomers: 0,
     numOfPages: 1,
   },
 };
@@ -124,12 +124,11 @@ export const OrdersProvider = ({ children }) => {
     setLoading(true);
     try {
       const { data } = await myFetch.get(url);
-      const { users, totalCustomers, numOfPages } = data;
-      console.log(users);
+      const { users: customers, totalUsers: totalCustomers, numOfPages } = data;
       dispatch({
         type: GET_CUSTOMERS_SUCCESS,
         payload: {
-          users,
+          customers,
           totalCustomers,
           numOfPages,
         },
