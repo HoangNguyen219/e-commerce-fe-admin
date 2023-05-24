@@ -270,14 +270,6 @@ const AddProduct = () => {
             handleChange={handleInput}
             list={booleanList}
           />
-          {/* free shiping */}
-          <FormRowSelect
-            labelText="free shiping"
-            name="freeShipping"
-            value={values.freeShipping}
-            handleChange={handleInput}
-            list={booleanList}
-          />
         </div>
         {/* description */}
         <div className="form-row">

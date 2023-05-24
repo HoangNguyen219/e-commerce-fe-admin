@@ -484,3 +484,7 @@ hr {
 .noneTransform {
   text-transform: none;
 }
+
+input[type="checkbox"] {
+  accent-color: var(--primary-500);
+}

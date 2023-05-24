@@ -73,7 +73,6 @@ const products_reducer = (state, action) => {
       category: 'all',
       color: 'all',
       price: state.max_price,
-      shipping: 'all',
       featured: 'all',
       sort: 'latest',
     };

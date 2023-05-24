@@ -118,7 +118,7 @@ const OrderDetailsPage = () => {
           </div>
         </div>
 
-        <CartTotal total={subtotal} shipping_fee={shippingFee} />
+        <CartTotal total={subtotal} shippingFee={shippingFee} />
       </section>
     </Wrapper>
   );

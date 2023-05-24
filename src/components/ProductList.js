@@ -14,7 +14,6 @@ const ProductList = () => {
     companyId,
     color,
     price,
-    shipping,
     featured,
     sort,
     page,
@@ -26,17 +25,7 @@ const ProductList = () => {
   const { isLoading, isError } = useUserContext();
   useEffect(() => {
     getProducts();
-  }, [
-    page,
-    text,
-    categoryId,
-    companyId,
-    color,
-    price,
-    shipping,
-    featured,
-    sort,
-  ]);
+  }, [page, text, categoryId, companyId, color, price, featured, sort]);
 
   if (isLoading) {
     return <Loading />;

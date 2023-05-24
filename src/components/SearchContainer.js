@@ -16,7 +16,6 @@ const SearchContainer = () => {
     color,
     min_price,
     max_price,
-    shipping,
     sort,
     handleChange,
     clearFilters,
@@ -132,15 +131,6 @@ const SearchContainer = () => {
             handleChange={handleSearch}
             list={booleanListAddAll}
           />
-          {/* free shiping */}
-          <FormRowSelect
-            labelText="free shiping"
-            name="shipping"
-            value={shipping}
-            handleChange={handleSearch}
-            list={booleanListAddAll}
-          />
-
           {/* end of feature */}
           {/* sort */}
           <FormRowSelect

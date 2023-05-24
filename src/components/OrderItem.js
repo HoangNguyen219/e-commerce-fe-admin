@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { formatPrice } from '../utils/helpers';
-import { WHITE, WHITE_DISPLAY } from '../utils/constants';
+import { WHITE, WHITE_DISPLAY, store_url } from '../utils/constants';
+import { Link } from 'react-router-dom';
 
 const OrderItem = ({ item }) => {
   const {
@@ -9,7 +10,9 @@ const OrderItem = ({ item }) => {
     price,
     amount,
     itemTotal,
-    productId: { name, primaryImage },
+    name,
+    primaryImage,
+    productId,
   } = item;
   const displayColor = color === WHITE ? WHITE_DISPLAY : color;
 
@@ -18,7 +21,9 @@ const OrderItem = ({ item }) => {
       <div className="title">
         <img src={primaryImage} alt={name} />
         <div>
-          <h5 className="name">{name}</h5>
+          <Link to={`${store_url}/products/${productId}`}>
+            <h5 className="name">{name}</h5>
+          </Link>
           <p className="color">
             color: <span style={{ background: displayColor }}></span>
           </p>
@@ -66,7 +71,7 @@ const Wrapper = styled.article`
     margin-bottom: 0;
   }
   .color {
-    color: var(--clr-grey-5);
+    color: var(--grey-500);
     font-size: 0.75rem;
     letter-spacing: var(--spacing);
     text-transform: capitalize;
@@ -84,14 +89,17 @@ const Wrapper = styled.article`
     }
   }
   .price-small {
-    color: var(--clr-primary-5);
+    color: var(--primary-500);
+  }
+  .name {
+    color: var(--primary-500);
   }
 
   @media (min-width: 776px) {
     .subtotal {
       display: block;
       margin-bottom: 0;
-      color: var(--clr-grey-5);
+      color: var(---grey-500);
       font-weight: 400;
       font-size: 1rem;
     }
@@ -101,7 +109,7 @@ const Wrapper = styled.article`
     .price {
       display: block;
       font-size: 1rem;
-      color: var(--clr-primary-5);
+      color: var(--primary-500);
       font-weight: 400;
     }
     .name {

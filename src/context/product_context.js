@@ -42,7 +42,6 @@ const initialState = {
   min_price: 0,
   max_price: 0,
   price: 0,
-  shipping: 'all',
   featured: 'all',
   product: { secondaryImages: [] },
   isEditing: false,
@@ -102,12 +101,11 @@ export const ProductsProvider = ({ children }) => {
       categoryId,
       color,
       price,
-      shipping,
       featured,
       sort,
     } = state;
 
-    let url = `${products_url}?page=${page}&text=${text}&companyId=${companyId}&categoryId=${categoryId}&color=${color}&price=${price}&shipping=${shipping}&featured=${featured}&sort=${sort}`;
+    let url = `${products_url}?page=${page}&text=${text}&companyId=${companyId}&categoryId=${categoryId}&color=${color}&price=${price}&featured=${featured}&sort=${sort}`;
     setLoading(true);
     try {
       const { data } = await myFetch.get(url);

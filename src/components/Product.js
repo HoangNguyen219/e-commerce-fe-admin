@@ -35,7 +35,6 @@ const Product = ({ products }) => {
             <th>Company</th>
             <th>Color</th>
             <th>Featured</th>
-            <th>Free Shipping</th>
             <th>Price</th>
             <th>Action</th>
           </tr>
@@ -81,7 +80,6 @@ const Product = ({ products }) => {
                     })}
                   </td>
                   <td>{featured.toString()}</td>
-                  <td>{freeShipping.toString()}</td>
                   <td className="price">{formatPrice(price)}</td>
 
                   <td>
