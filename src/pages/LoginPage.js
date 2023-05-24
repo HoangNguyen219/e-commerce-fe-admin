@@ -54,6 +54,7 @@ const LoginPage = () => {
         <FormRow
           type="email"
           name="email"
+          disabled={isLoading}
           value={values.email}
           handleChange={handleChange}
         />
@@ -61,6 +62,7 @@ const LoginPage = () => {
         <FormRow
           type="password"
           name="password"
+          disabled={isLoading}
           value={values.password}
           handleChange={handleChange}
         />

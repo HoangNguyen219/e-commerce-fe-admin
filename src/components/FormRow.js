@@ -1,5 +1,13 @@
 import React from 'react';
-const FormRow = ({ className, type, name, value, handleChange, labelText }) => {
+const FormRow = ({
+  className,
+  type,
+  name,
+  value,
+  handleChange,
+  labelText,
+  disabled,
+}) => {
   return (
     <div className={`${className} form-row`}>
       {labelText && (
@@ -9,6 +17,7 @@ const FormRow = ({ className, type, name, value, handleChange, labelText }) => {
       )}
       <input
         id={name}
+        {...(disabled ? { disabled: true } : {})}
         type={type}
         value={value}
         name={name}

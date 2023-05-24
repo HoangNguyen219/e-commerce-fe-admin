@@ -105,6 +105,7 @@ const AddParam = () => {
           <FormRow
             type="text"
             name="name"
+            disabled={isLoading}
             labelText="name"
             value={values.name}
             handleChange={handleInput}
@@ -113,6 +114,7 @@ const AddParam = () => {
           {/* dataType */}
           <FormRowSelect
             labelText="data Type"
+            disabled={isLoading}
             name="dataType"
             value={values.dataType}
             handleChange={handleInput}
@@ -123,6 +125,7 @@ const AddParam = () => {
           {values.dataType === 'Boolean' ? (
             <FormRowSelect
               labelText="value"
+              disabled={isLoading}
               name="value"
               value={values.value}
               handleChange={handleInput}
@@ -132,6 +135,7 @@ const AddParam = () => {
             <FormRow
               type="text"
               name="value"
+              disabled={isLoading}
               labelText="value"
               value={values.value}
               handleChange={handleInput}
@@ -142,6 +146,7 @@ const AddParam = () => {
           <FormRow
             type="text"
             name="description"
+            disabled={isLoading}
             labelText="description"
             value={values.description}
             handleChange={handleInput}
@@ -151,6 +156,7 @@ const AddParam = () => {
           <FormRowSelect
             labelText="Active"
             name="status"
+            disabled={isLoading}
             value={values.status}
             handleChange={handleInput}
             list={booleanList}

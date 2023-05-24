@@ -46,14 +46,7 @@ const AddProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let {
-      name,
-      price,
-      categoryId,
-      companyId,
-      description,
-      colorStocks,
-    } = values;
+    let { name, price, description, colorStocks } = values;
     if (
       !name ||
       !price ||
@@ -94,18 +87,11 @@ const AddProduct = () => {
       return;
     }
 
-    if (!isEditing) {
-      setValues({
-        ...values,
-        categoryId: categoryId || categories[0].id,
-        companyId: companyId || companies[0].id,
+    if (!isEditing && !primaryImageFile) {
+      displayAlert({
+        alertText: 'Please provide all values',
+        alertType: ALERT_DANGER,
       });
-      if (!primaryImageFile) {
-        displayAlert({
-          alertText: 'Please provide all values',
-          alertType: ALERT_DANGER,
-        });
-      }
     }
 
     if (primaryImageFile) {
@@ -121,6 +107,17 @@ const AddProduct = () => {
     }
     setIsReadySubmit(true);
   };
+
+  useEffect(() => {
+    if (!isEditing && categories.length > 0) {
+      setValues({
+        ...values,
+        categoryId: categories[0].id,
+        companyId: companies[0].id,
+        featured: false,
+      });
+    }
+  }, [categories]);
 
   useEffect(() => {
     if (isReadySubmit) {
@@ -235,6 +232,7 @@ const AddProduct = () => {
             type="text"
             name="name"
             labelText="name"
+            disabled={isLoading}
             value={values.name}
             handleChange={handleInput}
           />
@@ -243,6 +241,7 @@ const AddProduct = () => {
             labelText="Price (cent)"
             type="text"
             name="price"
+            disabled={isLoading}
             value={values.price}
             handleChange={handleInput}
           />
@@ -250,6 +249,7 @@ const AddProduct = () => {
           <FormRowSelect
             labelText="category"
             name="categoryId"
+            disabled={isLoading}
             value={values.categoryId && values.categoryId.id}
             handleChange={handleInput}
             list={categories}
@@ -258,6 +258,7 @@ const AddProduct = () => {
           <FormRowSelect
             labelText="company"
             name="companyId"
+            disabled={isLoading}
             value={values.companyId && values.companyId.id}
             handleChange={handleInput}
             list={companies}
@@ -266,6 +267,7 @@ const AddProduct = () => {
           <FormRowSelect
             labelText="Featured"
             name="featured"
+            disabled={isLoading}
             value={values.featured}
             handleChange={handleInput}
             list={booleanList}
@@ -280,6 +282,7 @@ const AddProduct = () => {
             className="form-textarea"
             id="description"
             name="description"
+            disabled={isLoading}
             value={values.description}
             onChange={handleInput}
           />
@@ -293,6 +296,7 @@ const AddProduct = () => {
                 <FormRowSelect
                   className="inline"
                   name="color"
+                  disabled={isLoading}
                   value={colorStock.color}
                   handleChange={(e) => handleColorStockChange(e, index)}
                   list={colorsObj}
@@ -301,11 +305,13 @@ const AddProduct = () => {
                   className="inline"
                   type="text"
                   name="stock"
+                  disabled={isLoading}
                   value={colorStock.stock}
                   handleChange={(e) => handleColorStockChange(e, index)}
                 />
                 <button
                   className="btn btn-danger"
+                  disabled={isLoading}
                   type="button"
                   onClick={() => handleShowModal(handleDeleteColorStock, index)}
                 >
@@ -315,6 +321,7 @@ const AddProduct = () => {
             ))}
           <button
             type="button"
+            disabled={isLoading}
             className="btn btn-safe"
             onClick={handleAddColorStock}
           >
@@ -332,6 +339,7 @@ const AddProduct = () => {
           )}
           <FileInput
             handleFileSelected={handlePrimaryImageChange}
+            disabled={isLoading}
             id="primaryImage"
           />
         </div>
@@ -350,6 +358,7 @@ const AddProduct = () => {
                   />
                   <button
                     className="btn-delete"
+                    disabled={isLoading}
                     type="button"
                     onClick={() =>
                       handleShowModal(handleSecondaryImageDelete, index)
@@ -363,6 +372,7 @@ const AddProduct = () => {
           <FileInput
             handleFileSelected={handleSecondaryImageChange}
             id="secondaryImages"
+            disabled={isLoading}
             multiple={true}
           />
         </div>

@@ -21,7 +21,8 @@ const Wrapper = styled.section`
     margin-bottom: 1rem;
   }
 
-  .btn {
+  .btn-hipster {
+    font-size: 0.8rem;
   }
 `;
 

@@ -1,10 +1,11 @@
 import React from 'react';
 
-const FileInput = ({ handleFileSelected, multiple, id }) => {
+const FileInput = ({ handleFileSelected, multiple, id, disabled }) => {
   return (
     <div>
       <input
         {...(multiple ? { multiple: true } : {})}
+        {...(disabled ? { disabled: true } : {})}
         type="file"
         accept="image/*"
         id={id}

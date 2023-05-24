@@ -100,6 +100,7 @@ const OrderDetailsPage = () => {
                 <FormRowSelect
                   name="processStatus"
                   value={value}
+                  disabled={isLoading}
                   handleChange={(e) => setValue(e.target.value)}
                   list={processStatusList}
                   className="inline"

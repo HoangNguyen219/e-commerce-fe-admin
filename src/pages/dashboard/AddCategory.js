@@ -71,6 +71,7 @@ const AddCategory = ({ typePath }) => {
             type="text"
             name="name"
             labelText="name"
+            disabled={isLoading}
             value={values.name}
             handleChange={handleInput}
           />

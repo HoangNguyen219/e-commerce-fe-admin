@@ -51,7 +51,6 @@ const Product = ({ products }) => {
                 companyId,
                 colorStocks,
                 featured,
-                freeShipping,
               } = product;
               return (
                 <tr key={id}>
