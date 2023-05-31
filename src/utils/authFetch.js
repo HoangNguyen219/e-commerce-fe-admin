@@ -3,7 +3,8 @@ import { baseUrl } from './constants';
 
 const authFetch = (logoutUser) => {
   const instance = axios.create({
-    baseURL: baseUrl,
+    baseURL: process.env.REACT_APP_API_URL || baseUrl,
+    withCredentials: true,
   });
 
   instance.interceptors.response.use(

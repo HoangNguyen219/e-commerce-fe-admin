@@ -6,6 +6,8 @@ import { store_url } from '../utils/constants';
 import { useProductsContext } from '../context/product_context';
 import Modal from './Modal';
 
+const storeUrl = process.env.REACT_APP_STORE_URL || store_url;
+
 const Product = ({ products }) => {
   const {
     setEditProduct,
@@ -59,7 +61,7 @@ const Product = ({ products }) => {
                   </td>
                   <td>
                     <a
-                      href={`${store_url}/products/${id}`}
+                      href={`${storeUrl}/products/${id}`}
                       className="btn btn-hipster"
                       target="_blank"
                       rel="noopener noreferrer"

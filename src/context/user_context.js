@@ -115,10 +115,11 @@ export const UserProvider = ({ children }) => {
   };
 
   const handleError = (error) => {
-    if (error.response.status === 401) return;
-    const msg = error.response
-      ? error.response.data.msg
-      : 'Some thing went wrong, please try again';
+    let msg = 'Some thing went wrong, please try again';
+    if (error.response) {
+      if (error.response.status === 401) return;
+      msg = error.response.data.msg;
+    }
     displayAlert({
       alertType: ALERT_DANGER,
       alertText: msg,
