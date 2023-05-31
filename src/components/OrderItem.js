@@ -5,21 +5,13 @@ import { WHITE, WHITE_DISPLAY, store_url } from '../utils/constants';
 import { Link } from 'react-router-dom';
 
 const OrderItem = ({ item }) => {
-  const {
-    color,
-    price,
-    amount,
-    itemTotal,
-    name,
-    primaryImage,
-    productId,
-  } = item;
+  const { color, price, amount, itemTotal, name, image, productId } = item;
   const displayColor = color === WHITE ? WHITE_DISPLAY : color;
 
   return (
     <Wrapper>
       <div className="title">
-        <img src={primaryImage} alt={name} />
+        <img src={image} alt={name} />
         <div>
           <Link to={`${store_url}/products/${productId}`}>
             <h5 className="name">{name}</h5>

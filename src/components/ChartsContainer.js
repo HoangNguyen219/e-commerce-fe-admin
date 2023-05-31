@@ -21,7 +21,7 @@ const ChartsContainer = () => {
     <Wrapper>
       <h4>Popular products</h4>
       <BarChart data={popularProductsData} />
-      <h4>Total Orders</h4>
+      <h4>Total Completed Orders</h4>
       <AreaChart data={revenueData} />
     </Wrapper>
   );

@@ -33,9 +33,7 @@ const products_reducer = (state, action) => {
   }
 
   if (action.type === GET_DATA_SUCCESS) {
-    const { products, categories, companies } = action.payload;
-    let maxPrice = products.map((product) => product.price);
-    maxPrice = Math.max(...maxPrice);
+    const { products, categories, companies, maxPrice } = action.payload;
     return {
       ...state,
       products,
@@ -69,8 +67,8 @@ const products_reducer = (state, action) => {
     return {
       ...state,
       text: '',
-      company: 'all',
-      category: 'all',
+      companyId: 'all',
+      categoryId: 'all',
       color: 'all',
       price: state.max_price,
       featured: 'all',

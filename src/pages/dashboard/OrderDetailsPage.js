@@ -56,6 +56,8 @@ const OrderDetailsPage = () => {
 
   return (
     <Wrapper>
+      <p>Order ID: {id}</p>
+
       <CartColumns />
       {orderItems &&
         orderItems.map((item) => {
