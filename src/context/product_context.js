@@ -128,12 +128,10 @@ export const ProductsProvider = ({ children }) => {
   const getCategories = async () => {
     const { text, sort } = state;
     let url = `/${state.typePath}?text=${text}&sort=${sort}`;
-    console.log(url);
     setLoading(true);
     try {
       const { data } = await myFetch.get(url);
       const dataCatCom = data[state.typePath];
-      console.log(data);
       dispatch({
         type: GET_CATEGORIES_SUCCESS,
         payload: {
@@ -142,7 +140,6 @@ export const ProductsProvider = ({ children }) => {
       });
       setError(false);
     } catch (error) {
-      console.log('============');
       handleError(error);
     }
     setLoading(false);

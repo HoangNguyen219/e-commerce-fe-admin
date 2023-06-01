@@ -74,7 +74,7 @@ const Product = ({ products }) => {
                   <td>
                     {colorStocks.map((c) => {
                       return (
-                        <p>
+                        <p key={c.color}>
                           {c.color} : {c.stock}
                         </p>
                       );

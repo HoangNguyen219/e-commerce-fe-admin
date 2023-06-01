@@ -19,7 +19,9 @@ export const addAll = (arr) => {
 
 export const toInt = (number) => {
   const parsedInt = parseInt(number);
-  return isNaN(parsedInt) || parsedInt.toString() != number ? 'NaN' : parsedInt;
+  return isNaN(parsedInt) || parsedInt.toString() !== number
+    ? 'NaN'
+    : parsedInt;
 };
 
 export const dateToString = (date) => {

@@ -117,7 +117,9 @@ export const UserProvider = ({ children }) => {
   const handleError = (error) => {
     let msg = 'Some thing went wrong, please try again';
     if (error.response) {
-      if (error.response.status === 401) return;
+      // if (error.response.status === 401 || error.response.status === 403) {
+      //   return;
+      // }
       msg = error.response.data.msg;
     }
     displayAlert({

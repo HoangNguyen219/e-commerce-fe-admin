@@ -5,7 +5,6 @@ import { useUserContext } from '../context/user_context';
 
 const SearchContainerStats = () => {
   const { startDateStr, endDateStr, handleChange } = useUserContext();
-  console.log(startDateStr);
 
   const handleSearch = (e) => {
     let name = e.target.name;
