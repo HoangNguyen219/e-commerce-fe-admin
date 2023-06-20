@@ -5,8 +5,10 @@ import { useProductsContext } from '../../context/product_context';
 const ProductsPage = () => {
   const { clearFilters, unsetEdit } = useProductsContext();
   useEffect(() => {
-    clearFilters();
-    unsetEdit();
+    setTimeout(() => {
+      clearFilters();
+      unsetEdit();
+    });
   }, []);
   return (
     <>

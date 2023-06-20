@@ -16,8 +16,10 @@ const CategoriesPage = ({ typePath }) => {
   } = useProductsContext();
 
   useEffect(() => {
-    setTypePath(typePath);
-    clearFilters();
+    setTimeout(() => {
+      setTypePath(typePath);
+      clearFilters();
+    }, 100);
   }, [typePath]);
 
   const [localSearch, setLocalSearch] = useState(text);

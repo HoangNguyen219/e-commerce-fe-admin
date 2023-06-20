@@ -5,7 +5,9 @@ import { useOrdersContext } from '../../context/order_context';
 const CustomersPage = () => {
   const { clearFilters } = useOrdersContext();
   useEffect(() => {
-    clearFilters();
+    setTimeout(() => {
+      clearFilters();
+    }, 100);
   }, []);
   return (
     <>
